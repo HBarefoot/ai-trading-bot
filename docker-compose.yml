@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: trading_bot_db
+    environment:
+      POSTGRES_DB: trading_bot
+      POSTGRES_USER: trader
+      POSTGRES_PASSWORD: trading123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - trading_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: trading_bot_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - trading_network
+    command: redis-server --appendonly yes
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: trading_bot_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@trading.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - trading_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  trading_network:
+    driver: bridge
