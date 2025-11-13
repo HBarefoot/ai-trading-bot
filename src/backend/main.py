@@ -280,8 +280,8 @@ async def get_candles(symbol: str, limit: int = 200):
     try:
         import ccxt
         
-        # Initialize Binance exchange
-        exchange = ccxt.binance({
+        # Initialize Binance.US exchange (unrestricted access)
+        exchange = ccxt.binanceus({
             'enableRateLimit': True,
             'options': {'defaultType': 'spot'}
         })
