@@ -46,7 +46,7 @@ except Exception as e:
 app = FastAPI(
     title="AI Trading Bot API",
     description="RESTful API for cryptocurrency trading bot with ML predictions",
-    version="1.0.1",
+    version="1.0.2",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -104,7 +104,7 @@ async def root():
     """Root endpoint"""
     return {
         "name": "AI Trading Bot API",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "status": "running",
         "docs": "/docs",
         "health": "/health"
@@ -124,7 +124,7 @@ async def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow(),
-        "version": "1.0.1",
+        "version": "1.0.2",
         "database": db_status,
         "environment": os.getenv("ENVIRONMENT", "production")
     }
