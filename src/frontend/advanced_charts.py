@@ -518,9 +518,13 @@ class AdvancedChart:
 def fetch_chart_data(symbol: str, limit: int = 200) -> pd.DataFrame:
     """Fetch chart data from API"""
     try:
-        # Get API URL from Streamlit secrets or session state
+        # Get API URL from Streamlit secrets, session state, or default to localhost
         import streamlit as st
-        api_url = st.session_state.get('api_url', 'http://localhost:9000')
+        api_url = None
+        try:
+            api_url = st.secrets["api_url"]
+        except:
+            api_url = st.session_state.get('api_url', 'http://localhost:9000')
         
         response = requests.get(f'{api_url}/api/candles/{symbol}?limit={limit}', timeout=5)
         if response.status_code == 200:
@@ -540,9 +544,13 @@ def fetch_chart_data(symbol: str, limit: int = 200) -> pd.DataFrame:
 def fetch_trades(symbol: str = None) -> List[Dict]:
     """Fetch trades from API"""
     try:
-        # Get API URL from Streamlit secrets or session state
+        # Get API URL from Streamlit secrets, session state, or default to localhost
         import streamlit as st
-        api_url = st.session_state.get('api_url', 'http://localhost:9000')
+        api_url = None
+        try:
+            api_url = st.secrets["api_url"]
+        except:
+            api_url = st.session_state.get('api_url', 'http://localhost:9000')
         
         response = requests.get(f'{api_url}/api/trades?limit=50', timeout=3)
         if response.status_code == 200:
