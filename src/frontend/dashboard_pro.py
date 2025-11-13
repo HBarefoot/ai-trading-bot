@@ -503,6 +503,17 @@ class APIClient:
         except Exception:
             # Silently fail on other errors in demo mode
             return None
+    
+    def post(self, endpoint: str, data: dict = None, timeout: int = 5) -> Optional[Dict]:
+        """POST request with error handling"""
+        try:
+            response = requests.post(f"{self.base_url}{endpoint}", json=data, timeout=timeout)
+            response.raise_for_status()
+            return response.json()
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            return None
+        except Exception:
+            return None
 
 
 def render_header():
@@ -780,7 +791,9 @@ def render_alerts_history():
         if hours:
             params['hours'] = hours
         
-        response = requests.get('http://localhost:9000/api/alerts', params=params, timeout=5)
+        # Get API URL from session state (set in main())
+        api_url = st.session_state.get('api_url', 'http://localhost:9000')
+        response = requests.get(f'{api_url}/api/alerts', params=params, timeout=5)
         
         if response.status_code == 200:
             data = response.json()
@@ -805,7 +818,8 @@ def render_alerts_history():
                         mark_params = {}
                         if symbol_filter != "All":
                             mark_params['symbol'] = symbol_filter
-                        requests.post('http://localhost:9000/api/alerts/mark-all-read', params=mark_params)
+                        api_url = st.session_state.get('api_url', 'http://localhost:9000')
+                        requests.post(f'{api_url}/api/alerts/mark-all-read', params=mark_params)
                         st.success("All alerts marked as read")
                         st.rerun()
                     except:
@@ -1177,8 +1191,9 @@ def check_new_alerts():
             st.session_state.shown_alert_ids = set()
         
         # Check for new alerts (last 5 minutes)
+        api_url = st.session_state.get('api_url', 'http://localhost:9000')
         response = requests.get(
-            'http://localhost:9000/api/alerts',
+            f'{api_url}/api/alerts',
             params={'limit': 10, 'unread_only': True, 'hours': 1},
             timeout=3
         )
@@ -1219,6 +1234,9 @@ def main():
     """Main dashboard"""
     api = APIClient()
     
+    # Store API URL in session state for other functions to use
+    st.session_state.api_url = api.base_url
+    
     # Check for new alerts
     check_new_alerts()
     
@@ -1236,29 +1254,23 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             if st.button("▶️ Start", disabled=is_running):
-                try:
-                    response = requests.post('http://localhost:9000/api/trading/start', timeout=5)
-                    if response.status_code == 200:
-                        st.success("Engine started!")
-                        time.sleep(1)
-                        st.rerun()
-                    else:
-                        st.error("Failed to start")
-                except:
-                    st.error("API not responding")
+                result = api.post('/api/trading/start')
+                if result:
+                    st.success("Engine started!")
+                    time.sleep(1)
+                    st.rerun()
+                else:
+                    st.error("Failed to start engine")
         
         with col2:
             if st.button("⏸️ Stop", disabled=not is_running):
-                try:
-                    response = requests.post('http://localhost:9000/api/trading/stop', timeout=5)
-                    if response.status_code == 200:
-                        st.success("Engine stopped!")
-                        time.sleep(1)
-                        st.rerun()
-                    else:
-                        st.error("Failed to stop")
-                except:
-                    st.error("API not responding")
+                result = api.post('/api/trading/stop')
+                if result:
+                    st.success("Engine stopped!")
+                    time.sleep(1)
+                    st.rerun()
+                else:
+                    st.error("Failed to stop engine")
         
         st.markdown("---")
         
