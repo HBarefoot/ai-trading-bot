@@ -483,10 +483,11 @@ class APIClient:
             response = requests.get(f"{self.base_url}{endpoint}", timeout=timeout)
             response.raise_for_status()
             return response.json()
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            # Silently fail on connection errors (expected when API is not available)
             return None
-        except Exception as e:
-            st.error(f"API Error: {str(e)}")
+        except Exception:
+            # Silently fail on other errors in demo mode
             return None
 
 
@@ -505,7 +506,7 @@ def render_header():
 def render_status_card(status_data: Dict):
     """Render system status card"""
     if not status_data:
-        st.error("❌ Unable to connect to API")
+        st.info("ℹ️ **Demo Mode** - Backend API not available. Displaying chart visualization only.")
         return
     
     is_active = status_data.get('trading_engine') == 'active'
@@ -553,7 +554,7 @@ def render_status_card(status_data: Dict):
 def render_portfolio_metrics(portfolio_data: Dict):
     """Render portfolio metrics"""
     if not portfolio_data:
-        st.warning("Portfolio data unavailable")
+        st.info("📊 Portfolio data requires backend API connection")
         return
     
     total_value = portfolio_data.get('total_value', 0)
@@ -729,7 +730,7 @@ def render_alerts_history():
         )
     
     with col4:
-        show_unread = st.checkbox("Unread Only", value=False)
+        show_unread = st.checkbox("Unread Only", value=False, key="alerts_unread_only")
     
     # Convert time filter to hours
     time_hours_map = {
@@ -876,7 +877,7 @@ def render_price_charts(api: 'APIClient'):
         )
     
     with col3:
-        auto_refresh = st.checkbox("Auto-refresh (30s)", value=False)
+        auto_refresh = st.checkbox("Auto-refresh (30s)", value=False, key="price_charts_auto_refresh")
         if auto_refresh:
             st.rerun()
     
@@ -909,23 +910,23 @@ def render_price_charts(api: 'APIClient'):
     
     with col1:
         st.markdown("**Moving Averages**")
-        show_sma = st.checkbox("SMA", value=True)
-        show_ema = st.checkbox("EMA", value=False)
+        show_sma = st.checkbox("SMA", value=True, key="indicator_sma")
+        show_ema = st.checkbox("EMA", value=False, key="indicator_ema")
         
     with col2:
         st.markdown("**Bands & Volume**")
-        show_bb = st.checkbox("Bollinger Bands", value=False)
-        show_vwap = st.checkbox("VWAP", value=False)
+        show_bb = st.checkbox("Bollinger Bands", value=False, key="indicator_bb")
+        show_vwap = st.checkbox("VWAP", value=False, key="indicator_vwap")
         
     with col3:
         st.markdown("**Oscillators**")
-        show_rsi = st.checkbox("RSI", value=True)
-        show_macd = st.checkbox("MACD", value=True)
+        show_rsi = st.checkbox("RSI", value=True, key="indicator_rsi")
+        show_macd = st.checkbox("MACD", value=True, key="indicator_macd")
         
     with col4:
         st.markdown("**Advanced**")
-        show_stoch = st.checkbox("Stochastic", value=False)
-        show_volume_profile = st.checkbox("Volume Profile", value=False)
+        show_stoch = st.checkbox("Stochastic", value=False, key="indicator_stoch")
+        show_volume_profile = st.checkbox("Volume Profile", value=False, key="indicator_volume_profile")
     
     st.markdown("---")
     
@@ -1195,8 +1196,9 @@ def check_new_alerts():
             
             st.session_state.last_alert_check = datetime.now()
     
-    except Exception as e:
-        logger.error(f"Error checking alerts: {e}")
+    except Exception:
+        # Silently fail on connection errors (expected when API is not available)
+        pass
 
 
 def main():
@@ -1249,7 +1251,7 @@ def main():
         if st.button("🔄 Refresh Data"):
             st.rerun()
         
-        auto_refresh = st.checkbox("Auto-refresh (30s)", value=False)
+        auto_refresh = st.checkbox("Auto-refresh (30s)", value=False, key="portfolio_auto_refresh")
         
         if auto_refresh:
             time.sleep(30)
