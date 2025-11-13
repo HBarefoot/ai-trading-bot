@@ -477,7 +477,12 @@ class APIClient:
     def __init__(self, base_url: str = None):
         # Try to get API URL from secrets (Streamlit Cloud or Railway)
         if base_url is None:
-            base_url = st.secrets.get("api_url", "http://localhost:9000")
+            try:
+                # Streamlit secrets access
+                base_url = st.secrets["api_url"]
+            except (KeyError, FileNotFoundError):
+                # Fallback to localhost for local development
+                base_url = "http://localhost:9000"
         self.base_url = base_url
     
     def get(self, endpoint: str, timeout: int = 5) -> Optional[Dict]:
@@ -1262,7 +1267,7 @@ def main():
         
         st.markdown("---")
         st.markdown("### 📊 System Info")
-        st.caption("API: http://localhost:9000")
+        st.caption(f"API: {api.base_url}")
         st.caption(f"Updated: {datetime.now().strftime('%H:%M:%S')}")
     
     # Fetch data

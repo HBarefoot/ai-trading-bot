@@ -77,6 +77,13 @@ async def startup_event():
     try:
         if test_connection():
             logger.info("Database connected successfully")
+            # Auto-create tables if they don't exist
+            try:
+                from data.database import create_tables
+                create_tables()
+                logger.info("Database schema initialized")
+            except Exception as e:
+                logger.warning(f"Could not initialize database schema: {e}")
         else:
             logger.warning("Database connection unavailable - some features will be limited")
     except Exception as e:
