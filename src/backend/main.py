@@ -130,6 +130,46 @@ async def health_check():
     }
 
 
+@app.get("/api/status")
+async def get_status(db: Session = Depends(get_db)):
+    """Get trading bot status"""
+    try:
+        # Check database connection
+        db_connected = test_connection()
+        
+        # Get some basic stats
+        total_trades = db.query(Trade).count() if db_connected else 0
+        active_positions = db.query(Portfolio).filter(Portfolio.quantity > 0).count() if db_connected else 0
+        
+        return {
+            "trading_engine": "stopped",  # Default - would be "active" if trading engine running
+            "database": "connected" if db_connected else "disconnected",
+            "total_trades": total_trades,
+            "active_positions": active_positions,
+            "uptime": "online",
+            "last_update": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error getting status: {e}")
+        return {
+            "trading_engine": "stopped",
+            "database": "error",
+            "error": str(e)
+        }
+
+
+@app.get("/api/signals")
+async def get_signals():
+    """Get current trading signals"""
+    # This would integrate with your ML model / trading signals
+    # For now, return empty or demo data
+    return {
+        "signals": [],
+        "last_update": datetime.utcnow().isoformat(),
+        "message": "No active signals - ML model not yet integrated"
+    }
+
+
 # Market data endpoints
 @app.get("/api/market-data/{symbol}", response_model=List[MarketDataResponse])
 async def get_market_data(
@@ -166,6 +206,49 @@ async def get_latest_price(symbol: str, db: Session = Depends(get_db)):
     except Exception as e:
         logger.error(f"Error fetching latest price: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.get("/api/candles/{symbol}")
+async def get_candles(symbol: str, limit: int = 200):
+    """Get candlestick data for charts (live from Binance)"""
+    try:
+        import ccxt
+        
+        # Initialize Binance exchange
+        exchange = ccxt.binance({
+            'enableRateLimit': True,
+            'options': {'defaultType': 'spot'}
+        })
+        
+        # Fetch OHLCV data
+        ohlcv = exchange.fetch_ohlcv(symbol, '1h', limit=limit)
+        
+        # Format for frontend
+        candles = []
+        for candle in ohlcv:
+            candles.append({
+                'timestamp': candle[0],
+                'open': candle[1],
+                'high': candle[2],
+                'low': candle[3],
+                'close': candle[4],
+                'volume': candle[5]
+            })
+        
+        return {
+            'symbol': symbol,
+            'candles': candles,
+            'count': len(candles)
+        }
+    except Exception as e:
+        logger.error(f"Error fetching candles: {e}")
+        # Return empty data instead of error to prevent frontend crashes
+        return {
+            'symbol': symbol,
+            'candles': [],
+            'count': 0,
+            'error': str(e)
+        }
 
 
 # Trading endpoints
