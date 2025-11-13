@@ -26,6 +26,166 @@ st.set_page_config(
     }
 )
 
+
+# Authentication function
+def check_password():
+    """Returns True if user is authenticated."""
+    
+    # Initialize authentication state
+    if "authenticated" not in st.session_state:
+        st.session_state.authenticated = False
+    
+    # If already authenticated, continue
+    if st.session_state.authenticated:
+        return True
+    
+    # Hide default Streamlit elements for clean login page
+    st.markdown("""
+    <style>
+        /* Hide Streamlit elements on login page */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        .stDeployButton {display: none;}
+        
+        /* Full screen login background */
+        .stApp {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        }
+        
+        /* Hide default padding */
+        .block-container {
+            padding-top: 0rem;
+            padding-bottom: 0rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        /* Login input styling */
+        .stTextInput > div > div > input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            padding: 1rem;
+        }
+        
+        .stTextInput > div > div > input:focus {
+            border-color: rgba(102, 126, 234, 0.8);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+        
+        .stTextInput > label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Button styling */
+        .stButton > button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stButton > button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Center everything vertically and horizontally
+    col_left, col_center, col_right = st.columns([1, 2, 1])
+    
+    with col_center:
+        st.markdown("<div style='height: 10vh;'></div>", unsafe_allow_html=True)
+        
+        # Logo and title
+        st.markdown("""
+        <div style='text-align: center; margin-bottom: 3rem;'>
+            <div style='font-size: 4rem; margin-bottom: 1rem;'>🤖</div>
+            <h1 style='
+                color: white;
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            '>AI Trading Bot Pro</h1>
+            <p style='
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 1rem;
+                font-weight: 500;
+            '>AI-Enhanced • Real-Time Analysis • Professional Trading</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Login card
+        st.markdown("""
+        <div style='
+            background: linear-gradient(135deg, rgba(15, 12, 41, 0.8), rgba(48, 43, 99, 0.6));
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 100px rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            backdrop-filter: blur(10px);
+        '>
+        """, unsafe_allow_html=True)
+        
+        # Password input
+        password = st.text_input(
+            "Password", 
+            type="password", 
+            key="password_input",
+            placeholder="Enter your password",
+            label_visibility="visible"
+        )
+        
+        st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+        
+        # Login button
+        if st.button("🔓 Unlock Dashboard", use_container_width=True):
+            # Check password from secrets (Streamlit Cloud) or environment variable
+            try:
+                correct_password = st.secrets.get("app_password", "trading2024")
+            except:
+                # Fallback for local development
+                correct_password = "trading2024"
+            
+            if password == correct_password:
+                st.session_state.authenticated = True
+                st.success("✅ Access granted! Loading dashboard...")
+                time.sleep(0.8)
+                st.rerun()
+            else:
+                st.error("❌ Access denied. Please check your password.")
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        # Footer
+        st.markdown("""
+        <div style='text-align: center; margin-top: 2rem; color: rgba(255, 255, 255, 0.4); font-size: 0.85rem;'>
+            <p>Secure authentication required • Your trading data is protected</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    return False
+
+
+# Check authentication before showing dashboard
+if not check_password():
+    st.stop()
+
 # Professional dark theme CSS
 st.markdown("""
 <style>
