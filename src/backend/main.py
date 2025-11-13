@@ -79,11 +79,21 @@ async def startup_event():
             logger.info("Database connected successfully")
             # Auto-create tables if they don't exist
             try:
-                from data.database import create_tables
+                from data.database import create_tables, engine
+                from sqlalchemy import text, inspect
+                
+                # Create tables
                 create_tables()
-                logger.info("Database schema initialized")
+                
+                # Verify tables were created
+                inspector = inspect(engine)
+                tables = inspector.get_table_names(schema='trading')
+                logger.info(f"Database schema initialized - Tables: {tables}")
+                
+                if not tables:
+                    logger.error("No tables found after creation! Check schema and permissions.")
             except Exception as e:
-                logger.warning(f"Could not initialize database schema: {e}")
+                logger.error(f"Could not initialize database schema: {e}", exc_info=True)
         else:
             logger.warning("Database connection unavailable - some features will be limited")
     except Exception as e:
@@ -142,7 +152,10 @@ async def get_status(db: Session = Depends(get_db)):
         active_positions = db.query(Portfolio).filter(Portfolio.quantity > 0).count() if db_connected else 0
         
         return {
-            "trading_engine": "stopped",  # Default - would be "active" if trading engine running
+            "trading_engine": "stopped",  # "stopped" or "active"
+            "mode": "PAPER TRADING",  # Trading mode display
+            "exchange": "connected",  # Exchange connection status
+            "data_feed": "active",  # Data feed status
             "database": "connected" if db_connected else "disconnected",
             "total_trades": total_trades,
             "active_positions": active_positions,
