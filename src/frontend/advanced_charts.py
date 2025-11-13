@@ -518,14 +518,18 @@ class AdvancedChart:
 def fetch_chart_data(symbol: str, limit: int = 200) -> pd.DataFrame:
     """Fetch chart data from API"""
     try:
-        response = requests.get(f'http://localhost:9000/api/candles/{symbol}?limit={limit}', timeout=5)
+        # Get API URL from Streamlit secrets or session state
+        import streamlit as st
+        api_url = st.session_state.get('api_url', 'http://localhost:9000')
+        
+        response = requests.get(f'{api_url}/api/candles/{symbol}?limit={limit}', timeout=5)
         if response.status_code == 200:
             data = response.json()
-            if data:
-                df = pd.DataFrame(data)
+            if data.get('candles'):
+                df = pd.DataFrame(data['candles'])
                 # Ensure timestamp is datetime with flexible ISO8601 parsing
                 if 'timestamp' in df.columns:
-                    df['timestamp'] = pd.to_datetime(df['timestamp'], format='ISO8601')
+                    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
                 return df
     except Exception as e:
         print(f"Error fetching chart data: {e}")
@@ -536,7 +540,11 @@ def fetch_chart_data(symbol: str, limit: int = 200) -> pd.DataFrame:
 def fetch_trades(symbol: str = None) -> List[Dict]:
     """Fetch trades from API"""
     try:
-        response = requests.get('http://localhost:9000/api/trades?limit=50', timeout=3)
+        # Get API URL from Streamlit secrets or session state
+        import streamlit as st
+        api_url = st.session_state.get('api_url', 'http://localhost:9000')
+        
+        response = requests.get(f'{api_url}/api/trades?limit=50', timeout=3)
         if response.status_code == 200:
             all_trades = response.json()
             if symbol:
