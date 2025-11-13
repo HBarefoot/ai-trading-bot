@@ -10,21 +10,37 @@ import logging
 import os
 from datetime import datetime, timedelta
 
+# Configure logging first
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 # Import local modules
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from data.database import get_db, test_connection
-from data.models import MarketData, Trade, Portfolio, Strategy
-from .schemas import (
-    MarketDataResponse, TradeRequest, TradeResponse, 
-    PortfolioResponse, StrategyResponse
-)
-from .services import TradingService, PortfolioService
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+try:
+    from data.database import get_db, test_connection
+    from data.models import MarketData, Trade, Portfolio, Strategy
+    from .schemas import (
+        MarketDataResponse, TradeRequest, TradeResponse, 
+        PortfolioResponse, StrategyResponse
+    )
+    from .services import TradingService, PortfolioService
+    logger.info("All modules imported successfully")
+except Exception as e:
+    logger.error(f"Import error: {e}")
+    # Create dummy functions if imports fail
+    def get_db():
+        raise HTTPException(status_code=503, detail="Database not available")
+    def test_connection():
+        return False
+    class TradingService:
+        pass
+    class PortfolioService:
+        pass
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -57,10 +73,14 @@ async def startup_event():
     """Initialize application on startup"""
     logger.info("Starting AI Trading Bot API...")
     
-    # Test database connection
-    if not test_connection():
-        logger.error("Database connection failed!")
-        raise Exception("Database connection failed")
+    # Test database connection (non-blocking for Railway deployment)
+    try:
+        if test_connection():
+            logger.info("Database connected successfully")
+        else:
+            logger.warning("Database connection unavailable - some features will be limited")
+    except Exception as e:
+        logger.warning(f"Database connection error: {e} - continuing without database")
     
     logger.info("API started successfully")
 
@@ -71,14 +91,35 @@ async def shutdown_event():
     logger.info("Shutting down AI Trading Bot API...")
 
 
+# Root endpoint
+@app.get("/")
+async def root():
+    """Root endpoint"""
+    return {
+        "name": "AI Trading Bot API",
+        "version": "1.0.0",
+        "status": "running",
+        "docs": "/docs",
+        "health": "/health"
+    }
+
+
 # Health check endpoint
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
+    db_status = "unknown"
+    try:
+        db_status = "connected" if test_connection() else "disconnected"
+    except:
+        db_status = "unavailable"
+    
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow(),
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "database": db_status,
+        "environment": os.getenv("ENVIRONMENT", "production")
     }
 
 
