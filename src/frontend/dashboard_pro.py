@@ -157,8 +157,8 @@ def check_password():
         if st.button("🔓 Unlock Dashboard", use_container_width=True):
             # Check password from secrets (Streamlit Cloud) or environment variable
             try:
-                correct_password = st.secrets.get("app_password", "trading2024")
-            except:
+                correct_password = st.secrets["app_password"]
+            except (KeyError, FileNotFoundError, AttributeError):
                 # Fallback for local development
                 correct_password = "trading2024"
             
@@ -480,9 +480,10 @@ class APIClient:
             try:
                 # Streamlit secrets access
                 base_url = st.secrets["api_url"]
-            except (KeyError, FileNotFoundError):
+            except (KeyError, FileNotFoundError, AttributeError, Exception):
                 # Fallback to localhost for local development
                 base_url = "http://localhost:9000"
+                logger.info("Using localhost API (secrets not configured)")
         self.base_url = base_url
     
     def get(self, endpoint: str, timeout: int = 5) -> Optional[Dict]:
@@ -1365,4 +1366,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        st.error(f"❌ Application Error: {str(e)}")
+        st.info("💡 **Troubleshooting:**")
+        st.markdown("""
+        - Check that Streamlit secrets are configured
+        - Verify API URL is accessible
+        - Check browser console for errors
+        """)
+        logger.exception("Application crashed")
