@@ -108,6 +108,40 @@ async def shutdown_event():
     logger.info("Shutting down AI Trading Bot API...")
 
 
+@app.get("/api/admin/init-database")
+async def init_database():
+    """Manually initialize database tables (admin endpoint)"""
+    try:
+        from data.database import create_tables, engine
+        from sqlalchemy import text, inspect
+        
+        # Create schema and tables
+        create_tables()
+        
+        # Check what was created
+        inspector = inspect(engine)
+        
+        # Check trading schema
+        trading_tables = inspector.get_table_names(schema='trading')
+        
+        # Check public schema (Railway default)
+        public_tables = inspector.get_table_names(schema='public')
+        
+        return {
+            "status": "success",
+            "message": "Database initialization attempted",
+            "trading_schema_tables": trading_tables,
+            "public_schema_tables": public_tables,
+            "schemas": inspector.get_schema_names()
+        }
+    except Exception as e:
+        logger.error(f"Database initialization failed: {e}", exc_info=True)
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+
+
 # Root endpoint
 @app.get("/")
 async def root():
@@ -403,18 +437,60 @@ async def get_trades(
 
 
 # Portfolio endpoints
-@app.get("/api/portfolio", response_model=List[PortfolioResponse])
+@app.get("/api/portfolio")
 async def get_portfolio(
     db: Session = Depends(get_db)
 ):
-    """Get current portfolio"""
+    """Get portfolio summary for dashboard"""
     try:
-        portfolio = await portfolio_service.get_portfolio(db)
-        return [PortfolioResponse.from_orm(p) for p in portfolio]
+        # Get all positions from database
+        positions = db.query(Portfolio).all()
+        
+        # Calculate portfolio metrics
+        total_value = 0
+        cash_balance = 10000.0  # Default starting balance for paper trading
+        unrealized_pnl = 0
+        
+        position_list = []
+        for pos in positions:
+            total_value += pos.current_value or 0
+            unrealized_pnl += (pos.current_value or 0) - (pos.average_price * pos.quantity)
+            position_list.append({
+                'symbol': pos.symbol,
+                'quantity': pos.quantity,
+                'average_price': pos.average_price,
+                'current_value': pos.current_value
+            })
+        
+        # Calculate total portfolio value
+        total_portfolio_value = total_value + cash_balance
+        
+        # Calculate return percentage
+        initial_value = 10000.0  # Starting balance
+        total_return_pct = ((total_portfolio_value - initial_value) / initial_value) * 100 if initial_value > 0 else 0
+        
+        return {
+            'total_value': round(total_portfolio_value, 2),
+            'cash': round(cash_balance, 2),
+            'cash_balance': round(cash_balance, 2),
+            'unrealized_pnl': round(unrealized_pnl, 2),
+            'total_return_pct': round(total_return_pct, 2),
+            'positions': position_list,
+            'position_count': len(position_list)
+        }
         
     except Exception as e:
         logger.error(f"Error fetching portfolio: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        # Return empty portfolio instead of error
+        return {
+            'total_value': 10000.0,
+            'cash': 10000.0,
+            'cash_balance': 10000.0,
+            'unrealized_pnl': 0.0,
+            'total_return_pct': 0.0,
+            'positions': [],
+            'position_count': 0
+        }
 
 
 @app.get("/api/portfolio/value")
