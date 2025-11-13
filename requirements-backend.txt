@@ -1,0 +1,32 @@
+# Railway Backend Requirements
+# Optimized for cloud deployment
+
+# Core API
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.13.0
+
+# Data handling (lightweight)
+pandas>=2.2.0
+numpy>=1.26.0,<2.0.0
+requests==2.31.0
+
+# Trading APIs
+ccxt==4.1.42
+websocket-client==1.6.4
+python-binance==1.0.19
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Optional: If you need ML features, uncomment these
+# scikit-learn==1.3.2
+# Note: TensorFlow and PyTorch are heavy - only add if needed

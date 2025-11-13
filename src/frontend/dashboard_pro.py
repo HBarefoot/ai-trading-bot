@@ -474,7 +474,10 @@ st.markdown("""
 class APIClient:
     """API client for backend communication"""
     
-    def __init__(self, base_url: str = "http://localhost:9000"):
+    def __init__(self, base_url: str = None):
+        # Try to get API URL from secrets (Streamlit Cloud or Railway)
+        if base_url is None:
+            base_url = st.secrets.get("api_url", "http://localhost:9000")
         self.base_url = base_url
     
     def get(self, endpoint: str, timeout: int = 5) -> Optional[Dict]:
