@@ -34,10 +34,14 @@ st.markdown("""
         background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     }
     
-    /* Remove Streamlit branding */
+    /* Remove Streamlit branding - but keep sidebar toggle working */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
+    
+    /* Keep header visible so sidebar toggle button works */
+    header[data-testid="stHeader"] {
+        background: transparent;
+    }
     
     /* Custom header */
     .header-container {
@@ -218,6 +222,12 @@ st.markdown("""
     
     [data-testid="stSidebar"] .element-container {
         color: white;
+    }
+    
+    /* Sidebar toggle button - simple and clean, don't interfere with Streamlit */
+    [data-testid="collapsedControl"] {
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     /* Tables */
