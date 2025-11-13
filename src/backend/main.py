@@ -170,6 +170,59 @@ async def get_signals():
     }
 
 
+@app.get("/api/alerts")
+async def get_alerts(
+    limit: int = 20,
+    offset: int = 0,
+    unread_only: bool = False,
+    alert_type: str = None,
+    symbol: str = None,
+    hours: int = None
+):
+    """Get trading alerts"""
+    # This would integrate with your alert system
+    # For now, return empty data
+    return {
+        "alerts": [],
+        "stats": {
+            "total": 0,
+            "unread": 0,
+            "recent_24h": 0
+        },
+        "has_more": False
+    }
+
+
+@app.post("/api/alerts/mark-all-read")
+async def mark_alerts_read(symbol: str = None):
+    """Mark all alerts as read"""
+    return {"success": True, "message": "All alerts marked as read"}
+
+
+@app.post("/api/trading/start")
+async def start_trading():
+    """Start the trading engine"""
+    # This would start your actual trading engine
+    # For now, just return success
+    return {
+        "success": True,
+        "message": "Trading engine start requested",
+        "status": "starting"
+    }
+
+
+@app.post("/api/trading/stop")
+async def stop_trading():
+    """Stop the trading engine"""
+    # This would stop your actual trading engine
+    # For now, just return success
+    return {
+        "success": True,
+        "message": "Trading engine stop requested",
+        "status": "stopping"
+    }
+
+
 # Market data endpoints
 @app.get("/api/market-data/{symbol}", response_model=List[MarketDataResponse])
 async def get_market_data(
