@@ -19,9 +19,9 @@ numpy>=1.26.0,<2.0.0
 requests==2.31.0
 
 # Trading APIs
-ccxt==4.1.42
-websocket-client==1.6.4
-python-binance==1.0.19
+ccxt>=4.3.0
+websocket-client>=1.6.4
+python-binance>=1.0.19
 
 # Security
 python-jose[cryptography]==3.3.0
