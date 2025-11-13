@@ -276,36 +276,73 @@ async def get_latest_price(symbol: str, db: Session = Depends(get_db)):
 
 @app.get("/api/candles/{symbol}")
 async def get_candles(symbol: str, limit: int = 200):
-    """Get candlestick data for charts (live from Binance)"""
+    """Get candlestick data for charts (live from Binance or fallback to demo data)"""
     try:
         import ccxt
+        from datetime import datetime, timedelta
         
-        # Initialize Binance.US exchange (unrestricted access)
-        exchange = ccxt.binanceus({
-            'enableRateLimit': True,
-            'options': {'defaultType': 'spot'}
-        })
-        
-        # Fetch OHLCV data
-        ohlcv = exchange.fetch_ohlcv(symbol, '1h', limit=limit)
-        
-        # Format for frontend
-        candles = []
-        for candle in ohlcv:
-            candles.append({
-                'timestamp': candle[0],
-                'open': candle[1],
-                'high': candle[2],
-                'low': candle[3],
-                'close': candle[4],
-                'volume': candle[5]
+        # Try Binance.US first
+        try:
+            exchange = ccxt.binanceus({
+                'enableRateLimit': True,
+                'options': {'defaultType': 'spot'}
             })
-        
-        return {
-            'symbol': symbol,
-            'candles': candles,
-            'count': len(candles)
-        }
+            
+            # Fetch OHLCV data
+            ohlcv = exchange.fetch_ohlcv(symbol, '1h', limit=limit)
+            
+            # Format for frontend
+            candles = []
+            for candle in ohlcv:
+                candles.append({
+                    'timestamp': candle[0],
+                    'open': candle[1],
+                    'high': candle[2],
+                    'low': candle[3],
+                    'close': candle[4],
+                    'volume': candle[5]
+                })
+            
+            return {
+                'symbol': symbol,
+                'candles': candles,
+                'count': len(candles)
+            }
+        except Exception as binance_error:
+            logger.warning(f"Binance.US unavailable, using fallback data: {binance_error}")
+            
+            # Fallback: Generate realistic demo data
+            import random
+            base_price = 90000 if 'BTC' in symbol else 3400  # BTC or ETH base
+            now = datetime.now()
+            candles = []
+            
+            for i in range(limit):
+                timestamp = int((now - timedelta(hours=limit-i)).timestamp() * 1000)
+                # Simulate realistic price movement
+                variation = random.uniform(-0.02, 0.02)
+                open_price = base_price * (1 + variation)
+                close_price = base_price * (1 + random.uniform(-0.02, 0.02))
+                high_price = max(open_price, close_price) * random.uniform(1.0, 1.01)
+                low_price = min(open_price, close_price) * random.uniform(0.99, 1.0)
+                volume = random.uniform(100, 1000)
+                
+                candles.append({
+                    'timestamp': timestamp,
+                    'open': round(open_price, 2),
+                    'high': round(high_price, 2),
+                    'low': round(low_price, 2),
+                    'close': round(close_price, 2),
+                    'volume': round(volume, 2)
+                })
+                base_price = close_price  # Continue from previous close
+            
+            return {
+                'symbol': symbol,
+                'candles': candles,
+                'count': len(candles),
+                'mode': 'DEMO_DATA'
+            }
     except Exception as e:
         logger.error(f"Error fetching candles: {e}")
         # Return empty data instead of error to prevent frontend crashes
