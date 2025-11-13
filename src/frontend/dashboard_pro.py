@@ -478,13 +478,18 @@ class APIClient:
         # Try to get API URL from secrets (Streamlit Cloud or Railway)
         if base_url is None:
             try:
-                # Streamlit secrets access
-                base_url = st.secrets["api_url"]
-            except (KeyError, FileNotFoundError, AttributeError, Exception):
+                # Streamlit secrets access - try both possible locations
+                if hasattr(st, 'secrets') and 'api_url' in st.secrets:
+                    base_url = st.secrets["api_url"]
+                    logger.info(f"Loaded API URL from secrets: {base_url}")
+                else:
+                    raise KeyError("api_url not found in secrets")
+            except Exception as e:
                 # Fallback to localhost for local development
                 base_url = "http://localhost:9000"
-                logger.info("Using localhost API (secrets not configured)")
+                logger.warning(f"Using localhost API (secrets error: {e})")
         self.base_url = base_url
+        logger.info(f"APIClient initialized with base_url: {self.base_url}")
     
     def get(self, endpoint: str, timeout: int = 5) -> Optional[Dict]:
         """GET request with error handling"""
