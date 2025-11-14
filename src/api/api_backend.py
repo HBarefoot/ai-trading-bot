@@ -78,9 +78,23 @@ trading_task = None
 async def startup_event():
     """Initialize services on startup with graceful error handling"""
     global trading_engine, exchange_manager, data_feed_manager
-    
+
     logger.info("Starting AI Trading Bot API...")
-    
+
+    # Initialize database tables
+    db_url = os.getenv('DATABASE_URL')
+    if db_url:
+        try:
+            from data.database import create_tables
+            logger.info("Creating database tables if they don't exist...")
+            create_tables()
+            logger.info("✅ Database tables initialized successfully")
+        except Exception as e:
+            logger.error(f"❌ Failed to create database tables: {e}")
+            logger.warning("App will continue but database operations may fail")
+    else:
+        logger.warning("No DATABASE_URL found - skipping database initialization")
+
     try:
         # Initialize exchange manager with Binance credentials from .env
         from trading.exchange_integration import initialize_exchanges
