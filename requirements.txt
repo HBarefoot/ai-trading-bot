@@ -1,14 +1,16 @@
-# Streamlit Cloud Requirements
+# Streamlit Cloud Requirements (Optimized for fast cold starts)
 # This file is used by Streamlit Cloud (always uses requirements.txt)
 # For Railway backend deployment, see requirements-railway.txt
 
 # Frontend
 streamlit==1.28.2
+
+# Visualization (specific version for stability)
 plotly==5.17.0
 
-# Data Processing (lightweight)
-pandas>=2.2.0
-numpy>=1.26.0,<2.0.0
+# Data Processing (pinned versions for faster installs)
+pandas==2.2.0
+numpy==1.26.4
 
 # API Client
 requests==2.31.0
