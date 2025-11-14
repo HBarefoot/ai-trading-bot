@@ -21,6 +21,8 @@ from strategies.week1_refined_5m import Week1Refined5mStrategy
 from data.candle_aggregator import get_candle_aggregator, start_candle_aggregator
 from trading.signal_monitor import get_signal_monitor
 from trading.paper_trading_monitor import PaperTradingMonitor
+from data.database import get_db
+from data.models import Trade as DBTrade
 
 logger = logging.getLogger(__name__)
 
@@ -220,6 +222,34 @@ class LiveTradingEngine5m:
 
         # Candle aggregator (will be initialized on start)
         self.candle_aggregator = None
+
+    def save_trade_to_database(self, symbol: str, side: str, amount: float, price: float, strategy: str = "Week1Refined5m"):
+        """Save trade to database for dashboard display"""
+        try:
+            db = next(get_db())
+            
+            # Create database trade record
+            db_trade = DBTrade(
+                symbol=symbol,
+                side=side.lower(),  # Database expects lowercase
+                quantity=amount,
+                price=price,
+                timestamp=datetime.now(),
+                strategy=strategy,
+                profit_loss=0  # Will be calculated when position is closed
+            )
+            
+            db.add(db_trade)
+            db.commit()
+            db.close()
+            
+            logger.info(f"💾 Trade saved to database: {side} {amount:.6f} {symbol} @ ${price:.2f}")
+            
+        except Exception as e:
+            logger.error(f"Failed to save trade to database: {e}")
+            if 'db' in locals():
+                db.rollback()
+                db.close()
 
     async def start(self):
         """Start the live trading engine"""
@@ -551,6 +581,9 @@ class LiveTradingEngine5m:
                     'amount': amount
                 })
 
+                # Save trade to database for dashboard
+                self.save_trade_to_database(symbol, 'BUY', amount, price)
+
                 logger.info(f"✅ BUY EXECUTED: {amount:.6f} {symbol} at ${price:.2f}")
             else:
                 logger.error(f"❌ Buy order failed for {symbol}: {order_result['error']}")
@@ -630,6 +663,9 @@ class LiveTradingEngine5m:
                     'pnl_pct': pnl_pct,
                     'reason': reason
                 })
+
+                # Save trade to database for dashboard
+                self.save_trade_to_database(symbol, 'SELL', position.amount, price)
 
                 emoji = "🟢" if pnl_pct > 0 else "🔴"
                 logger.info(f"{emoji} SELL EXECUTED: {position.amount:.6f} {symbol} at ${price:.2f} "

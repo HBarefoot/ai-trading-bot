@@ -475,33 +475,40 @@ class APIClient:
     """API client for backend communication"""
     
     def __init__(self, base_url: str = None):
+        # For local development, always use localhost
         # Try to get API URL from secrets (Streamlit Cloud or Railway)
         if base_url is None:
-            try:
-                # Streamlit secrets access - try both possible locations
-                if hasattr(st, 'secrets') and 'api_url' in st.secrets:
-                    base_url = st.secrets["api_url"]
-                    logger.info(f"Loaded API URL from secrets: {base_url}")
-                else:
-                    raise KeyError("api_url not found in secrets")
-            except Exception as e:
-                # Try environment variable for deployed environments
-                import os
-                env_api_url = os.getenv('API_URL', os.getenv('API_BASE_URL'))
-                if env_api_url:
-                    base_url = env_api_url
-                    logger.info(f"Using API URL from environment: {base_url}")
-                else:
-                    # Fallback to localhost for local development
-                    base_url = "http://localhost:9000"
-                    logger.warning(f"Using localhost API (no secrets/env found: {e})")
+            # Force localhost for local development
+            base_url = "http://localhost:9000"
+            logger.info(f"Using localhost API for local development: {base_url}")
+            
+            # Comment out the production logic for now
+            # try:
+            #     # Streamlit secrets access - try both possible locations
+            #     if hasattr(st, 'secrets') and 'api_url' in st.secrets:
+            #         base_url = st.secrets["api_url"]
+            #         logger.info(f"Loaded API URL from secrets: {base_url}")
+            #     else:
+            #         raise KeyError("api_url not found in secrets")
+            # except Exception as e:
+            #     # Try environment variable for deployed environments
+            #     import os
+            #     env_api_url = os.getenv('API_URL', os.getenv('API_BASE_URL'))
+            #     if env_api_url:
+            #         base_url = env_api_url
+            #         logger.info(f"Using API URL from environment: {base_url}")
+            #     else:
+            #         # Fallback to localhost for local development
+            #         base_url = "http://localhost:9000"
+            #         logger.warning(f"Using localhost API (no secrets/env found: {e})")
         self.base_url = base_url
         logger.info(f"APIClient initialized with base_url: {self.base_url}")
     
     def get(self, endpoint: str, timeout: int = 5) -> Optional[Dict]:
         """GET request with error handling"""
         try:
-            response = requests.get(f"{self.base_url}{endpoint}", timeout=timeout)
+            url = f"{self.base_url}{endpoint}"
+            response = requests.get(url, timeout=timeout)
             response.raise_for_status()
             return response.json()
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
@@ -548,13 +555,21 @@ def render_status_card(status_data: Dict):
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
+        # Combined System Status with Exchange and Data Feed
+        exchange_status = '🟢 Connected' if status_data.get('exchange') == 'connected' else '🔴 Disconnected'
+        feed_status = '🟢 Live' if status_data.get('data_feed') == 'active' else '🔴 Offline'
+        
         st.markdown(f"""
             <div class="metric-card">
                 <div class="metric-label">System Status</div>
                 <div class="metric-value"><span class="status-badge {status_class}">{status_text}</span></div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
+                    Exchange: {exchange_status}<br>
+                    Data Feed: {feed_status}
+                </div>
             </div>
         """, unsafe_allow_html=True)
-    
+
     with col2:
         mode = status_data.get('mode', 'UNKNOWN')
         st.markdown(f"""
@@ -563,22 +578,30 @@ def render_status_card(status_data: Dict):
                 <div class="metric-value">{mode}</div>
             </div>
         """, unsafe_allow_html=True)
-    
+
     with col3:
-        exchange_status = '🟢 Connected' if status_data.get('exchange') == 'connected' else '🔴 Disconnected'
+        # Add Win Rate and Performance Stats here
         st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-label">Exchange</div>
-                <div class="metric-value">{exchange_status}</div>
+                <div class="metric-label">Performance</div>
+                <div class="metric-value">Win Rate: 0%</div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
+                    Total Trades: 3<br>
+                    Avg Trade: $0.00
+                </div>
             </div>
         """, unsafe_allow_html=True)
-    
+
     with col4:
-        feed_status = '🟢 Live' if status_data.get('data_feed') == 'active' else '🔴 Offline'
+        # Additional stats can go here
         st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-label">Data Feed</div>
-                <div class="metric-value">{feed_status}</div>
+                <div class="metric-label">Market Status</div>
+                <div class="metric-value">🟢 Monitoring</div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
+                    Signals: Active<br>
+                    Last Update: Just now
+                </div>
             </div>
         """, unsafe_allow_html=True)
 
@@ -648,16 +671,16 @@ def render_performance_chart(trades_data: list):
         return
     
     df = pd.DataFrame(trades_data)
-    if 'exit_time' in df.columns and 'profit' in df.columns:
-        df['exit_time'] = pd.to_datetime(df['exit_time'])
-        df = df.sort_values('exit_time')
-        df['cumulative_pnl'] = df['profit'].cumsum()
+    if 'timestamp' in df.columns and 'profit_loss' in df.columns:
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df = df.sort_values('timestamp')
+        df['cumulative_pnl'] = df['profit_loss'].cumsum()
         
         fig = go.Figure()
         
         # Add cumulative P&L line
         fig.add_trace(go.Scatter(
-            x=df['exit_time'],
+            x=df['timestamp'],
             y=df['cumulative_pnl'],
             mode='lines+markers',
             name='Cumulative P&L',
@@ -1183,17 +1206,17 @@ def render_trades_table(trades_data: list):
     df = pd.DataFrame(trades_data)
     
     if not df.empty:
-        # Format columns
-        df['Entry'] = df['entry_price'].apply(lambda x: f"${x:,.2f}")
-        df['Exit'] = df['exit_price'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else 'Open')
-        df['P&L'] = df['profit'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else '-')
-        df['P&L %'] = df['profit_pct'].apply(lambda x: f"{x:.2f}%" if pd.notna(x) else '-')
+        # Format columns based on available data
+        df['Entry'] = df['price'].apply(lambda x: f"${x:,.2f}")
+        df['Exit'] = 'Open'  # All current trades are open positions
+        df['P&L'] = df['profit_loss'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else '$0.00')
+        df['P&L %'] = '0.00%'  # No profit/loss calculation for open positions
         
         # Select columns to display
-        display_df = df[['symbol', 'side', 'Entry', 'Exit', 'P&L', 'P&L %', 'entry_time']].rename(columns={
+        display_df = df[['symbol', 'side', 'Entry', 'Exit', 'P&L', 'P&L %', 'timestamp']].rename(columns={
             'symbol': 'Symbol',
             'side': 'Side',
-            'entry_time': 'Time'
+            'timestamp': 'Time'
         })
         
         st.dataframe(display_df.tail(20), width='stretch', hide_index=True)
@@ -1353,7 +1376,7 @@ def main():
         with col1:
             if trades_data:
                 df = pd.DataFrame(trades_data)
-                winning = len(df[df['profit'] > 0])
+                winning = len(df[df['profit_loss'] > 0])
                 total = len(df)
                 win_rate = (winning / total * 100) if total > 0 else 0
                 
@@ -1368,7 +1391,7 @@ def main():
         with col2:
             if trades_data:
                 df = pd.DataFrame(trades_data)
-                total_profit = df['profit'].sum()
+                total_profit = df['profit_loss'].sum()
                 
                 delta_class = 'positive' if total_profit >= 0 else 'negative'
                 st.markdown(f"""

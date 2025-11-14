@@ -1,0 +1,1164 @@
+INFO:ai.openai_client:OpenAI client initialized successfully
+INFO:httpx:HTTP Request: GET https://api.openai.com/v1/models "HTTP/1.1 200 OK"
+INFO:ai.llm_client:✅ Using OpenAI API for LLM
+INFO:api.api_backend:AI modules loaded successfully
+INFO:     Started server process [82877]
+INFO:     Waiting for application startup.
+INFO:api.api_backend:Starting AI Trading Bot API...
+INFO:api.api_backend:Creating database tables if they don't exist...
+INFO:data.database:Database tables created successfully in public schema
+INFO:api.api_backend:✅ Database tables initialized successfully
+INFO:trading.exchange_integration:Configuring Binance.US endpoint for US users
+INFO:trading.exchange_integration:Exchanges initialized successfully
+INFO:api.api_backend:Exchanges initialized with credentials from .env
+INFO:trading.live_engine_5m:✨ AI-ENHANCED Strategy: AI Enhanced Strategy (Technical 40% + LSTM 30% + Sentiment 30%)
+INFO:trading.exchange_integration:Configuring Binance.US endpoint for US users
+INFO:trading.exchange_integration:Exchanges initialized successfully
+INFO:trading.signal_monitor:Signal Monitor initialized. Logs: logs/signals
+INFO:api.api_backend:Trading engine initialized
+INFO:api.api_backend:Skipping database operations - no production database configured
+INFO:data.live_feed:Using Binance.US WebSocket endpoint
+INFO:data.live_feed:Data feed manager started
+INFO:api.api_backend:Live data feed started
+INFO:api.api_backend:API startup completed with graceful handling
+INFO:api.api_backend:ℹ️  Trading engine NOT auto-started (set AUTO_START_TRADING=true to enable)
+INFO:api.api_backend:💡 Start trading manually via POST /api/trading/start
+INFO:data.live_feed:Starting live data feed for ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'ADAUSDT', 'DOTUSDT']
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:9000 (Press CTRL+C to quit)
+INFO:data.live_feed:Connected to Binance.US WebSocket: ['btcusdt@ticker', 'ethusdt@ticker', 'solusdt@ticker', 'adausdt@ticker', 'dotusdt@ticker']
+AI Trading Bot API started successfully!
+INFO:     127.0.0.1:56470 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56514 - "POST /api/trading/start HTTP/1.1" 200 OK
+INFO:trading.live_engine_5m:🚀 📄 PAPER TRADING (5m) Engine Started
+INFO:trading.live_engine_5m:Symbols: ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']
+INFO:trading.live_engine_5m:Strategy: AI Enhanced Strategy
+INFO:trading.live_engine_5m:Timeframe: 5 minutes
+INFO:trading.live_engine_5m:Update Interval: 30s
+INFO:trading.live_engine_5m:Initial Balance: $10,000.00
+INFO:trading.live_engine_5m:Expected Trade Frequency: 8-12 per day
+INFO:trading.live_engine_5m:⚠️  PAPER TRADING MODE - NO REAL MONEY AT RISK
+INFO:data.candle_aggregator:Candle Aggregator initialized: 5m candles for 3 symbols
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:10:00+00:00 O:96338.60 H:96647.54 L:96103.94 C:96338.60
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:15:00+00:00 O:96593.87 H:96593.87 L:96337.14 C:96593.87
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:20:00+00:00 O:96593.87 H:96593.87 L:96593.87 C:96593.87
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:25:00+00:00 O:96542.29 H:96593.87 L:96413.16 C:96542.29
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:30:00+00:00 O:96571.20 H:96826.23 L:96571.20 C:96571.20
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:35:00+00:00 O:96837.44 H:96838.10 L:96440.24 C:96837.44
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:40:00+00:00 O:96840.89 H:96841.26 L:96547.16 C:96840.89
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:45:00+00:00 O:97260.65 H:97260.65 L:96840.60 C:97260.65
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:50:00+00:00 O:96845.37 H:97260.65 L:96845.37 C:96845.37
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 15:55:00+00:00 O:96681.04 H:97214.05 L:96681.04 C:96681.04
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:00:00+00:00 O:96595.84 H:97048.36 L:96595.84 C:96595.84
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:05:00+00:00 O:96629.51 H:96630.43 L:96213.39 C:96629.51
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:10:00+00:00 O:96772.56 H:96772.56 L:96239.25 C:96772.56
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:15:00+00:00 O:96358.03 H:96772.52 L:96354.68 C:96358.03
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:20:00+00:00 O:96618.57 H:96619.98 L:96358.03 C:96618.57
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:25:00+00:00 O:97175.76 H:97175.76 L:96618.57 C:97175.76
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:30:00+00:00 O:97170.74 H:97172.18 L:96725.51 C:97170.74
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:35:00+00:00 O:97360.97 H:97360.97 L:97239.26 C:97360.97
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:40:00+00:00 O:97396.02 H:97398.33 L:97061.27 C:97396.02
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:45:00+00:00 O:97148.72 H:97370.82 L:97148.72 C:97148.72
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:50:00+00:00 O:97397.73 H:97399.69 L:97000.00 C:97397.73
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 16:55:00+00:00 O:97324.54 H:97397.73 L:97324.54 C:97324.54
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:00:00+00:00 O:97284.00 H:97324.54 L:96871.11 C:97284.00
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:05:00+00:00 O:97271.35 H:97284.00 L:97271.35 C:97271.35
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:10:00+00:00 O:96922.53 H:97269.92 L:96922.53 C:96922.53
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:15:00+00:00 O:96932.23 H:97243.18 L:96932.23 C:96932.23
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:20:00+00:00 O:96931.59 H:97231.52 L:96930.36 C:96931.59
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:25:00+00:00 O:96659.37 H:97004.26 L:96659.37 C:96659.37
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:30:00+00:00 O:96849.54 H:96854.42 L:96849.54 C:96849.54
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:35:00+00:00 O:96423.61 H:96849.54 L:96423.61 C:96423.61
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:40:00+00:00 O:96498.95 H:96743.73 L:96423.61 C:96498.95
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:45:00+00:00 O:96050.00 H:96498.98 L:96050.00 C:96050.00
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:50:00+00:00 O:95932.29 H:96020.30 L:95782.17 C:95932.29
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 17:55:00+00:00 O:96155.00 H:96186.17 L:95690.85 C:96155.00
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:00:00+00:00 O:95974.71 H:96155.00 L:95974.71 C:95974.71
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:05:00+00:00 O:95974.71 H:95974.71 L:95974.71 C:95974.71
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:10:00+00:00 O:95989.02 H:96154.12 L:95974.71 C:95989.02
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:15:00+00:00 O:96318.58 H:96318.64 L:96318.58 C:96318.58
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:20:00+00:00 O:96097.02 H:96318.58 L:95712.44 C:96097.02
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:25:00+00:00 O:96024.47 H:96095.07 L:95714.98 C:96024.47
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:30:00+00:00 O:96273.57 H:96276.30 L:96024.73 C:96273.57
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:35:00+00:00 O:95510.07 H:96066.25 L:95509.82 C:95510.07
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:40:00+00:00 O:95282.44 H:95752.06 L:95282.44 C:95282.44
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:45:00+00:00 O:95565.36 H:95567.20 L:95282.44 C:95565.36
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:50:00+00:00 O:95745.51 H:95745.51 L:95278.43 C:95745.51
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 18:55:00+00:00 O:95352.85 H:95745.51 L:95058.94 C:95058.94
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:00:00+00:00 O:94960.99 H:95352.85 L:94960.99 C:95277.50
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:05:00+00:00 O:94904.21 H:95410.45 L:94904.21 C:94904.21
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:10:00+00:00 O:95509.22 H:95509.22 L:95410.45 C:95509.22
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:15:00+00:00 O:95629.03 H:95629.29 L:95509.79 C:95629.03
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:20:00+00:00 O:95848.52 H:95848.52 L:95629.29 C:95848.52
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:25:00+00:00 O:95938.57 H:95938.93 L:95848.52 C:95938.57
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:30:00+00:00 O:95816.88 H:95937.98 L:95648.14 C:95648.14
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:35:00+00:00 O:95746.63 H:95816.88 L:95373.50 C:95373.50
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:40:00+00:00 O:95746.63 H:95746.63 L:95709.58 C:95709.58
+INFO:data.candle_aggregator:Loaded 601 historical records for BTCUSDT, created 55 candles
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:10:00+00:00 O:3166.07 H:3188.13 L:3166.07 C:3166.07
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:15:00+00:00 O:3193.07 H:3193.07 L:3174.27 C:3193.07
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:20:00+00:00 O:3181.18 H:3193.07 L:3181.18 C:3181.18
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:25:00+00:00 O:3210.74 H:3210.74 L:3172.33 C:3210.74
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:30:00+00:00 O:3207.18 H:3210.74 L:3207.18 C:3207.18
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:35:00+00:00 O:3201.71 H:3201.71 L:3201.71 C:3201.71
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:40:00+00:00 O:3206.88 H:3206.88 L:3197.73 C:3206.88
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:45:00+00:00 O:3209.14 H:3228.78 L:3206.88 C:3209.14
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:50:00+00:00 O:3217.63 H:3233.74 L:3209.14 C:3217.63
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 15:55:00+00:00 O:3190.60 H:3205.56 L:3190.60 C:3190.60
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:00:00+00:00 O:3203.16 H:3205.54 L:3191.00 C:3203.16
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:05:00+00:00 O:3194.74 H:3199.04 L:3185.40 C:3194.74
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:10:00+00:00 O:3204.94 H:3204.94 L:3204.35 C:3204.94
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:15:00+00:00 O:3205.36 H:3205.36 L:3205.32 C:3205.36
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:20:00+00:00 O:3202.80 H:3203.60 L:3202.80 C:3202.80
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:25:00+00:00 O:3248.19 H:3248.19 L:3202.80 C:3248.19
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:30:00+00:00 O:3241.97 H:3241.97 L:3241.42 C:3241.97
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:35:00+00:00 O:3254.71 H:3254.71 L:3241.97 C:3254.71
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:40:00+00:00 O:3237.59 H:3254.71 L:3237.59 C:3237.59
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:45:00+00:00 O:3230.33 H:3231.69 L:3230.33 C:3230.33
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:50:00+00:00 O:3232.51 H:3232.51 L:3230.33 C:3232.51
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 16:55:00+00:00 O:3241.47 H:3241.47 L:3232.51 C:3241.47
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:00:00+00:00 O:3242.44 H:3242.44 L:3239.16 C:3242.44
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:05:00+00:00 O:3237.44 H:3241.16 L:3237.44 C:3237.44
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:10:00+00:00 O:3246.48 H:3246.48 L:3242.70 C:3246.48
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:15:00+00:00 O:3235.89 H:3246.48 L:3229.69 C:3235.89
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:20:00+00:00 O:3221.39 H:3225.00 L:3221.39 C:3221.39
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:25:00+00:00 O:3217.70 H:3221.39 L:3217.70 C:3217.70
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:30:00+00:00 O:3209.30 H:3209.30 L:3209.25 C:3209.30
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:35:00+00:00 O:3213.20 H:3213.20 L:3208.19 C:3213.20
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:40:00+00:00 O:3205.36 H:3213.20 L:3205.36 C:3205.36
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:45:00+00:00 O:3193.62 H:3205.36 L:3191.12 C:3193.62
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:50:00+00:00 O:3185.69 H:3192.40 L:3173.92 C:3185.69
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 17:55:00+00:00 O:3185.71 H:3185.71 L:3185.69 C:3185.71
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:00:00+00:00 O:3185.71 H:3185.71 L:3185.71 C:3185.71
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:05:00+00:00 O:3188.33 H:3188.33 L:3185.71 C:3188.33
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:10:00+00:00 O:3205.36 H:3205.36 L:3180.14 C:3205.36
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:15:00+00:00 O:3206.77 H:3207.16 L:3206.77 C:3206.77
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:20:00+00:00 O:3181.19 H:3206.77 L:3181.19 C:3181.19
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:25:00+00:00 O:3182.61 H:3191.67 L:3182.61 C:3182.61
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:30:00+00:00 O:3198.94 H:3198.94 L:3182.61 C:3198.94
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:35:00+00:00 O:3176.94 H:3198.94 L:3176.94 C:3176.94
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:40:00+00:00 O:3162.24 H:3172.33 L:3162.24 C:3162.24
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:45:00+00:00 O:3164.34 H:3164.34 L:3160.82 C:3164.34
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:50:00+00:00 O:3172.33 H:3172.33 L:3160.75 C:3172.33
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 18:55:00+00:00 O:3156.50 H:3172.33 L:3156.50 C:3171.00
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:00:00+00:00 O:3158.65 H:3175.83 L:3158.65 C:3158.65
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:05:00+00:00 O:3159.73 H:3167.96 L:3157.03 C:3159.73
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:10:00+00:00 O:3188.60 H:3188.60 L:3167.96 C:3188.60
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:15:00+00:00 O:3201.91 H:3201.91 L:3193.46 C:3201.91
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:20:00+00:00 O:3217.83 H:3217.83 L:3204.95 C:3217.83
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:25:00+00:00 O:3217.83 H:3217.83 L:3217.83 C:3217.83
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:30:00+00:00 O:3204.54 H:3217.83 L:3202.21 C:3204.54
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:35:00+00:00 O:3199.91 H:3204.54 L:3193.46 C:3193.46
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:40:00+00:00 O:3199.91 H:3199.91 L:3199.91 C:3199.91
+INFO:data.candle_aggregator:Loaded 603 historical records for ETHUSDT, created 55 candles
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:10:00+00:00 O:140.80 H:142.07 L:140.80 C:140.80
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:15:00+00:00 O:141.00 H:141.00 L:141.00 C:141.00
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:20:00+00:00 O:141.22 H:141.22 L:141.00 C:141.22
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:25:00+00:00 O:141.39 H:141.39 L:140.41 C:141.39
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:30:00+00:00 O:142.09 H:142.09 L:142.09 C:142.09
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:35:00+00:00 O:141.29 H:141.74 L:141.24 C:141.29
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:40:00+00:00 O:142.21 H:142.21 L:141.90 C:142.21
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:45:00+00:00 O:143.40 H:143.67 L:142.27 C:143.40
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:50:00+00:00 O:143.02 H:143.02 L:143.02 C:143.02
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 15:55:00+00:00 O:142.25 H:142.96 L:142.25 C:142.25
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:00:00+00:00 O:142.02 H:142.25 L:142.02 C:142.02
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:05:00+00:00 O:142.02 H:142.02 L:142.02 C:142.02
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:10:00+00:00 O:142.70 H:142.78 L:142.02 C:142.70
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:15:00+00:00 O:142.54 H:142.71 L:142.54 C:142.54
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:20:00+00:00 O:142.73 H:142.73 L:142.47 C:142.73
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:25:00+00:00 O:143.80 H:143.80 L:143.05 C:143.80
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:30:00+00:00 O:143.48 H:143.80 L:143.48 C:143.48
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:35:00+00:00 O:144.21 H:144.21 L:143.84 C:144.21
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:40:00+00:00 O:144.21 H:144.21 L:144.21 C:144.21
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:45:00+00:00 O:143.54 H:143.54 L:143.12 C:143.54
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:50:00+00:00 O:144.00 H:144.00 L:143.61 C:144.00
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 16:55:00+00:00 O:143.61 H:143.61 L:143.61 C:143.61
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:00:00+00:00 O:143.41 H:143.61 L:143.41 C:143.41
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:05:00+00:00 O:143.41 H:143.41 L:143.41 C:143.41
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:10:00+00:00 O:143.40 H:143.83 L:143.40 C:143.40
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:15:00+00:00 O:143.43 H:143.43 L:143.27 C:143.43
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:20:00+00:00 O:142.98 H:143.43 L:142.98 C:142.98
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:25:00+00:00 O:142.50 H:142.94 L:142.50 C:142.50
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:30:00+00:00 O:142.39 H:142.49 L:142.39 C:142.39
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:35:00+00:00 O:142.25 H:142.39 L:142.25 C:142.25
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:40:00+00:00 O:142.09 H:142.46 L:142.09 C:142.09
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:45:00+00:00 O:141.20 H:142.09 L:141.20 C:141.20
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:50:00+00:00 O:141.02 H:141.20 L:141.02 C:141.02
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 17:55:00+00:00 O:141.61 H:141.61 L:141.02 C:141.61
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:00:00+00:00 O:141.61 H:141.61 L:141.61 C:141.61
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:05:00+00:00 O:141.64 H:141.64 L:141.58 C:141.64
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:10:00+00:00 O:142.83 H:142.83 L:141.92 C:142.83
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:15:00+00:00 O:142.23 H:142.90 L:142.23 C:142.23
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:20:00+00:00 O:141.63 H:142.31 L:141.63 C:141.63
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:25:00+00:00 O:142.07 H:142.07 L:141.63 C:142.07
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:30:00+00:00 O:142.30 H:142.33 L:142.18 C:142.30
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:35:00+00:00 O:141.39 H:142.16 L:141.39 C:141.39
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:40:00+00:00 O:141.24 H:141.24 L:141.24 C:141.24
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:45:00+00:00 O:141.24 H:141.24 L:141.24 C:141.24
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:50:00+00:00 O:141.24 H:141.24 L:141.24 C:141.24
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 18:55:00+00:00 O:141.21 H:141.24 L:141.21 C:141.21
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:00:00+00:00 O:141.53 H:141.61 L:141.21 C:141.53
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:05:00+00:00 O:141.53 H:141.53 L:141.15 C:141.53
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:10:00+00:00 O:142.45 H:142.87 L:142.09 C:142.45
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:15:00+00:00 O:142.45 H:142.45 L:142.45 C:142.45
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:20:00+00:00 O:143.43 H:143.43 L:142.45 C:143.43
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:25:00+00:00 O:142.95 H:143.21 L:142.95 C:143.21
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:30:00+00:00 O:142.62 H:142.95 L:142.62 C:142.62
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:35:00+00:00 O:142.72 H:142.72 L:142.62 C:142.62
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:40:00+00:00 O:142.72 H:142.72 L:142.72 C:142.72
+INFO:data.candle_aggregator:Loaded 601 historical records for SOLUSDT, created 55 candles
+INFO:data.candle_aggregator:Candle aggregator started: 5m candles
+INFO:trading.live_engine_5m:5-minute candle aggregator started
+INFO:strategies.ai_enhanced_strategy:Collecting sentiment data for BTC...
+INFO:strategies.ai_enhanced_strategy:Collected 10 news + 10 reddit posts
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:strategies.ai_enhanced_strategy:Sentiment for BTC: -0.21 (confidence: 0.75)
+INFO:strategies.ai_enhanced_strategy:Reason: The text only mentions price predictions without providing any specific analysis or rationale, leading to a neutral sentiment | Significant price drop to a 6-month low due to collapsing ETF demand | The news indicates a potential challenge to decentralized autonomous trusts (DATs) by real estate hybrid funds, but the impact on Bitcoin is not clearly bullish or bearish at the moment.
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.00 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.signal_monitor:Initial signal for BTCUSDT: HOLD
+INFO:strategies.ai_enhanced_strategy:Collecting sentiment data for ETH...
+INFO:strategies.ai_enhanced_strategy:Collected 10 news + 10 reddit posts
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:strategies.ai_enhanced_strategy:Sentiment for ETH: -0.21 (confidence: 0.75)
+INFO:strategies.ai_enhanced_strategy:Reason: The text only mentions price predictions without providing any specific analysis or rationale for Ethereum (ETH) | Significant selling pressure from long-term holders likely to lead to a price drop | The news about Tether's push into commodity lending could have mixed implications for Ethereum. It may bring more liquidity to the market, but also raises concerns about Tether's operations and potential impact on the overall market stability.
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.15 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.signal_monitor:Initial signal for ETHUSDT: HOLD
+INFO:strategies.ai_enhanced_strategy:Collecting sentiment data for SOL...
+INFO:strategies.ai_enhanced_strategy:Collected 9 news + 10 reddit posts
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:strategies.ai_enhanced_strategy:Sentiment for SOL: -0.03 (confidence: 0.71)
+INFO:strategies.ai_enhanced_strategy:Reason: The text simply mentions SOL along with other cryptocurrencies for price predictions without providing any specific information or analysis. Therefore, it does not indicate a clear bullish or bearish sentiment for SOL. | The text discusses reasons for the recent sell-off in Bitcoin and risk markets, but does not provide a clear indication of sentiment towards SOL specifically. The mention of a potential recovery suggests a neutral stance with a moderate level of confidence. | Negative sentiment towards Solana causing a decrease in sentiment
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.15 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.signal_monitor:Initial signal for SOLUSDT: HOLD
+INFO:     127.0.0.1:56601 - "GET /api/trades HTTP/1.1" 200 OK
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.10 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.16 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.07 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.01 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.04 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:     127.0.0.1:56926 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56999 - "GET /api/portfolio HTTP/1.1" 200 OK
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.17 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.19 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:     127.0.0.1:57101 - "POST /api/test-trade HTTP/1.1" 404 Not Found
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.06 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.01 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.18 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:     127.0.0.1:57342 - "GET /api/trades HTTP/1.1" 200 OK
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.09 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.13 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.01 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:45:00+00:00 O:95625.98 H:95768.20 L:95622.50 C:95768.20
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:45:00+00:00 O:142.56 H:142.56 L:142.56 C:142.56
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:45:00+00:00 O:3188.60 H:3204.88 L:3188.60 C:3204.88
+INFO:data.candle_aggregator:Completed 5m candle: DOTUSDT @ 2025-11-14 19:45:00+00:00 O:2.85 H:2.85 L:2.85 C:2.85
+INFO:data.candle_aggregator:Completed 5m candle: ADAUSDT @ 2025-11-14 19:45:00+00:00 O:0.52 H:0.52 L:0.52 C:0.52
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.04 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.16 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.01 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.19 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.04 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.12 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.14 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.17 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.11 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.02 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.01 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.01 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.live_engine_5m:Portfolio Status: $10,000.00 | Cash: $10,000.00 | Positions: 0 | Trades: 0
+INFO:trading.live_engine_5m:Performance: 0.0% win rate (0/0 trades)
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.10 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.15 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.14 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.14 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.15 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.06 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.04 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.07 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.09 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.02 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.08 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:data.candle_aggregator:Completed 5m candle: ADAUSDT @ 2025-11-14 19:50:00+00:00 O:0.52 H:0.52 L:0.52 C:0.52
+INFO:data.candle_aggregator:Completed 5m candle: DOTUSDT @ 2025-11-14 19:50:00+00:00 O:2.85 H:2.85 L:2.85 C:2.85
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:50:00+00:00 O:95768.20 H:95768.20 L:95768.20 C:95768.20
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.15 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.signal_monitor:Signal change for BTCUSDT: HOLD → BUY
+INFO:trading.alert_manager:Alert database initialized: data/alerts.db
+INFO:trading.alert_manager:Alert added: SIGNAL_CHANGE - BTCUSDT - 🟢 Signal: BTCUSDT HOLD → BUY @ $95768.20 | RSI: 56.5 | Trend: BEARISH
+INFO:trading.live_engine_5m:🟢 BUY SIGNAL detected for BTCUSDT @ $95768.20 (RSI: 56.5, Trend: BEARISH)
+INFO:trading.live_engine_5m:💰 Executing BUY for BTCUSDT: 0.031326 @ $95768.20 ($3000.00)
+INFO:trading.live_engine_5m:📄 PAPER TRADE: Simulated BUY order for BTCUSDT
+INFO:trading.live_engine_5m:Opened position: 0.031326 BTCUSDT at $95768.20, SL: $81402.97, TP: $124498.66
+INFO:trading.alert_manager:Alert added: TRADE_EXECUTED - BTCUSDT - Trade #1: BUY 0.031326 BTCUSDT @ $95768.20
+INFO:trading.live_engine_5m:💾 Trade saved to database: BUY 0.031326 BTCUSDT @ $95768.20
+INFO:trading.live_engine_5m:✅ BUY EXECUTED: 0.031326 BTCUSDT at $95768.20
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.06 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:50:00+00:00 O:3204.88 H:3206.49 L:3195.70 C:3206.49
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:50:00+00:00 O:142.56 H:143.23 L:142.56 C:143.23
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.19 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.10 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.02 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.signal_monitor:Signal change for SOLUSDT: HOLD → SELL
+INFO:trading.alert_manager:Alert added: SIGNAL_CHANGE - SOLUSDT - 🔴 Signal: SOLUSDT HOLD → SELL @ $143.23 | RSI: 74.9 | Trend: BEARISH
+INFO:trading.live_engine_5m:🔴 SELL SIGNAL detected for SOLUSDT @ $143.23
+INFO:trading.live_engine_5m:No position to sell for SOLUSDT
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.07 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.10 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+[14:55:00] 🟢 Signal: BTCUSDT HOLD → BUY @ $95768.20 | RSI: 56.5 | Trend: BEARISH
+[14:55:00] Trade #1: BUY 0.031326 BTCUSDT @ $95768.20
+📝 Trade logged: BUY BTCUSDT @ $95768.20
+[14:55:31] 🔴 Signal: SOLUSDT HOLD → SELL @ $143.23 | RSI: 74.9 | Trend: BEARISH
+INFO:     127.0.0.1:59063 - "GET /api/trades HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59092 - "GET /api/portfolio HTTP/1.1" 200 OK
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.11 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.16 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.16 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.00 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.14 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.12 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.18 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.09 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.live_engine_5m:Portfolio Status: $9,992.29 | Cash: $7,000.00 | Positions: 1 | Trades: 1
+INFO:trading.live_engine_5m:Performance: 0.0% win rate (0/0 trades)
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.06 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.12 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.10 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.08 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.06 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.15 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.19 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:trading.signal_monitor:Signal change for BTCUSDT: BUY → HOLD
+INFO:trading.alert_manager:Alert added: SIGNAL_CHANGE - BTCUSDT - ⚪ Signal: BTCUSDT BUY → HOLD @ $95522.16 | RSI: 56.5 | Trend: BEARISH
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.00 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+[14:59:33] ⚪ Signal: BTCUSDT BUY → HOLD @ $95522.16 | RSI: 56.5 | Trend: BEARISH
+INFO:     127.0.0.1:60126 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60128 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60130 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60132 - "GET /api/portfolio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60134 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60136 - "GET /api/trades?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60171 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60173 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60175 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60177 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60179 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60181 - "GET /api/portfolio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60183 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60185 - "GET /api/trades?limit=50 HTTP/1.1" 200 OK
+INFO:data.candle_aggregator:Completed 5m candle: ADAUSDT @ 2025-11-14 19:55:00+00:00 O:0.52 H:0.52 L:0.52 C:0.52
+INFO:data.candle_aggregator:Completed 5m candle: BTCUSDT @ 2025-11-14 19:55:00+00:00 O:95768.20 H:95905.05 L:95522.16 C:95522.16
+INFO:data.candle_aggregator:Completed 5m candle: ETHUSDT @ 2025-11-14 19:55:00+00:00 O:3206.49 H:3206.49 L:3203.29 C:3203.29
+INFO:data.candle_aggregator:Completed 5m candle: SOLUSDT @ 2025-11-14 19:55:00+00:00 O:143.23 H:143.23 L:143.02 C:143.02
+INFO:data.candle_aggregator:Completed 5m candle: DOTUSDT @ 2025-11-14 19:55:00+00:00 O:2.85 H:2.85 L:2.85 C:2.85
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.06 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.12 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.08 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:     127.0.0.1:60214 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60216 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60218 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60220 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60222 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60224 - "GET /api/portfolio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60226 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60228 - "GET /api/trades?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60292 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60294 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60296 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60298 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60300 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60302 - "GET /api/portfolio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60304 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60306 - "GET /api/trades?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60316 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60318 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60320 - "GET /api/alerts?limit=10&unread_only=True&hours=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60322 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60324 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60326 - "GET /api/portfolio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60328 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60330 - "GET /api/trades?limit=50 HTTP/1.1" 200 OK
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.15 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.04 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.17 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:     127.0.0.1:60418 - "GET /api/trades HTTP/1.1" 200 OK
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for BTC: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for BTC:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.10 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for ETH: -0.21
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for ETH:
+INFO:strategies.ai_enhanced_strategy:  Technical: 0.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      -0.14 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.21 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     0.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
+INFO:strategies.ai_enhanced_strategy:Using cached sentiment for SOL: -0.03
+INFO:strategies.ai_enhanced_strategy:
+============================================================
+INFO:strategies.ai_enhanced_strategy:Signal Breakdown for SOL:
+INFO:strategies.ai_enhanced_strategy:  Technical: -1.00 (weight: 0.4)
+INFO:strategies.ai_enhanced_strategy:  LSTM:      0.05 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Sentiment: -0.03 (weight: 0.3)
+INFO:strategies.ai_enhanced_strategy:  Final:     -1.00
+INFO:strategies.ai_enhanced_strategy:============================================================
+
