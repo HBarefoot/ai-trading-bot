@@ -517,36 +517,49 @@ class AdvancedChart:
 
 def fetch_chart_data(symbol: str, limit: int = 200) -> pd.DataFrame:
     """Fetch chart data from API"""
+    import streamlit as st
+
+    # Get API URL from Streamlit secrets, session state, or default to localhost
+    api_url = None
     try:
-        # Get API URL from Streamlit secrets, session state, or default to localhost
-        import streamlit as st
-        api_url = None
-        try:
-            api_url = st.secrets["api_url"]
-        except:
-            api_url = st.session_state.get('api_url', 'http://localhost:9000')
-        
-        response = requests.get(f'{api_url}/api/candles/{symbol}?limit={limit}', timeout=5)
-        if response.status_code == 200:
-            data = response.json()
+        api_url = st.secrets["api_url"]
+    except:
+        api_url = st.session_state.get('api_url', 'http://localhost:9000')
 
-            # Handle both response formats: direct array or wrapped object
-            if isinstance(data, list):
-                candles = data  # Direct array response
-            elif isinstance(data, dict) and 'candles' in data:
-                candles = data['candles']  # Wrapped in object
-            else:
-                return pd.DataFrame()
+    try:
+        response = requests.get(f'{api_url}/api/candles/{symbol}?limit={limit}', timeout=10)
 
-            if candles:
-                df = pd.DataFrame(candles)
-                # Ensure timestamp is datetime with flexible ISO8601 parsing
-                if 'timestamp' in df.columns:
-                    df['timestamp'] = pd.to_datetime(df['timestamp'])
-                return df
+        if response.status_code != 200:
+            st.error(f"❌ API Error: {response.status_code} - {response.text[:200]}")
+            return pd.DataFrame()
+
+        data = response.json()
+
+        # Handle both response formats: direct array or wrapped object
+        if isinstance(data, list):
+            candles = data  # Direct array response
+        elif isinstance(data, dict) and 'candles' in data:
+            candles = data['candles']  # Wrapped in object
+        else:
+            st.error(f"❌ Unexpected API response format: {type(data)}")
+            return pd.DataFrame()
+
+        if candles:
+            df = pd.DataFrame(candles)
+            # Ensure timestamp is datetime with flexible ISO8601 parsing
+            if 'timestamp' in df.columns:
+                df['timestamp'] = pd.to_datetime(df['timestamp'])
+            return df
+        else:
+            st.warning(f"⚠️ API returned 0 candles for {symbol}")
+
+    except requests.exceptions.Timeout:
+        st.error(f"❌ API timeout connecting to {api_url}")
+    except requests.exceptions.ConnectionError:
+        st.error(f"❌ Cannot connect to API at {api_url}")
     except Exception as e:
-        print(f"Error fetching chart data: {e}")
-    
+        st.error(f"❌ Error fetching chart data: {type(e).__name__}: {str(e)}")
+
     return pd.DataFrame()
 
 
