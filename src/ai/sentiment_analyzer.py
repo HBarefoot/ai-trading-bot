@@ -11,7 +11,7 @@ from dataclasses import dataclass
 import json
 import re
 
-from ai.ollama_client import ollama_client
+from ai.llm_client import llm_client
 
 logger = logging.getLogger(__name__)
 
@@ -39,9 +39,10 @@ class SentimentScore:
 class SentimentAnalyzer:
     """Analyzes sentiment for cryptocurrency markets"""
     
-    def __init__(self, model: str = "llama3.2:3b"):
+    def __init__(self, model: Optional[str] = None):
+        # Use gpt-4o-mini for OpenAI or llama3.2:3b for Ollama
         self.model = model
-        self.client = ollama_client
+        self.client = llm_client
         
         # System prompt for sentiment analysis
         self.sentiment_system_prompt = """You are a cryptocurrency market sentiment analyst.

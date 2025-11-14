@@ -34,6 +34,7 @@ passlib[bcrypt]==1.7.4
 # ===== AI & Sentiment Analysis =====
 beautifulsoup4>=4.12.0
 feedparser>=6.0.10
+openai>=1.0.0
 
 # ===== Optional: Uncomment if you need machine learning features =====
 # scikit-learn==1.3.2

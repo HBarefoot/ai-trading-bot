@@ -1,5 +1,5 @@
 """
-Market Commentary Generator using Ollama
+Market Commentary Generator using LLM
 Generates natural language explanations and insights
 """
 import logging
@@ -7,15 +7,15 @@ from typing import Dict, List, Optional
 from datetime import datetime
 import pandas as pd
 
-from ai.ollama_client import ollama_client
+from ai.llm_client import llm_client
 
 logger = logging.getLogger(__name__)
 
 class MarketCommentary:
     """Generate natural language market commentary using LLM"""
     
-    def __init__(self, model: str = "llama3.2:3b"):  # Changed from llama3.1:latest to faster model
-        self.client = ollama_client
+    def __init__(self, model: Optional[str] = None):
+        self.client = llm_client
         self.model = model
     
     def explain_trade(

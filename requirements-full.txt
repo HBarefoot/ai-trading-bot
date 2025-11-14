@@ -15,6 +15,7 @@ tensorflow==2.15.0
 torch==2.1.1
 stable-baselines3==2.2.1
 gym==0.29.1
+openai>=1.0.0
 
 # Data collection
 ccxt==4.1.42
