@@ -546,9 +546,9 @@ def fetch_chart_data(symbol: str, limit: int = 200) -> pd.DataFrame:
 
         if candles:
             df = pd.DataFrame(candles)
-            # Ensure timestamp is datetime with flexible ISO8601 parsing
+            # Ensure timestamp is datetime with ISO8601 format (handles microseconds + timezone)
             if 'timestamp' in df.columns:
-                df['timestamp'] = pd.to_datetime(df['timestamp'])
+                df['timestamp'] = pd.to_datetime(df['timestamp'], format='ISO8601')
             return df
         else:
             st.warning(f"⚠️ API returned 0 candles for {symbol}")
