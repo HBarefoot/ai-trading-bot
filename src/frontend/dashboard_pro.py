@@ -800,7 +800,7 @@ def render_alerts_history():
         
         # Get API URL from session state (set in main())
         api_url = st.session_state.get('api_url', 'http://localhost:9000')
-        response = requests.get(f'{api_url}/api/alerts', params=params, timeout=5)
+        response = requests.get(f'{api_url}/api/alerts', params=params, timeout=15)
         
         if response.status_code == 200:
             data = response.json()
@@ -887,9 +887,13 @@ def render_alerts_history():
         
         else:
             st.error("Failed to fetch alerts from API")
-    
+
+    except requests.exceptions.Timeout:
+        st.warning("⏱️ Alert loading timed out. The backend may be processing a large number of alerts. Try refreshing the page.")
+    except requests.exceptions.ConnectionError:
+        st.error("❌ Cannot connect to backend API. Check your connection.")
     except Exception as e:
-        st.error(f"Error loading alerts: {str(e)}")
+        st.error(f"❌ Error loading alerts: {str(e)}")
 
 
 def render_price_charts(api: 'APIClient'):
