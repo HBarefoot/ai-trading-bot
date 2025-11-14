@@ -20,16 +20,24 @@ class UnifiedLLMClient:
     def _initialize_client(self):
         """Initialize the best available LLM client"""
         # Try OpenAI first if API key is available
-        if os.getenv("OPENAI_API_KEY"):
+        openai_key = os.getenv("OPENAI_API_KEY")
+        if openai_key and openai_key != "your_openai_api_key_here":
             try:
                 from ai.openai_client import get_openai_client
                 self.client = get_openai_client()
                 if self.client and self.client.is_available():
                     self.provider = "openai"
-                    logger.info("Using OpenAI API for LLM")
+                    logger.info("✅ Using OpenAI API for LLM")
                     return
+                else:
+                    logger.warning("OpenAI client created but not available")
             except Exception as e:
                 logger.warning(f"Failed to initialize OpenAI client: {e}")
+        else:
+            if not openai_key:
+                logger.info("No OpenAI API key provided")
+            else:
+                logger.info("OpenAI API key is placeholder - skipping OpenAI initialization")
         
         # Fall back to Ollama
         try:
@@ -37,12 +45,13 @@ class UnifiedLLMClient:
             if ollama_client.is_available():
                 self.client = ollama_client
                 self.provider = "ollama"
-                logger.info("Using Ollama for LLM")
+                logger.info("✅ Using Ollama for LLM")
                 return
         except Exception as e:
             logger.warning(f"Failed to initialize Ollama client: {e}")
         
-        logger.error("No LLM provider available! Install OpenAI library and set OPENAI_API_KEY, or run Ollama locally")
+        logger.warning("⚠️  No LLM provider available! Set OPENAI_API_KEY or run Ollama locally")
+        logger.info("Sentiment analysis will be disabled but trading will continue")
     
     def generate(
         self,
