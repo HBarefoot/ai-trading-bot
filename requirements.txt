@@ -1,16 +1,16 @@
-# Streamlit Cloud Requirements (Optimized for fast cold starts)
+# Streamlit Cloud Requirements (Python 3.13 compatible)
 # This file is used by Streamlit Cloud (always uses requirements.txt)
 # For Railway backend deployment, see requirements-railway.txt
 
 # Frontend
-streamlit==1.28.2
+streamlit>=1.39.0
 
-# Visualization (specific version for stability)
-plotly==5.17.0
+# Visualization
+plotly>=5.24.0
 
-# Data Processing (pinned versions for faster installs)
-pandas==2.2.0
-numpy==1.26.4
+# Data Processing (Python 3.13 compatible versions with wheels)
+pandas>=2.2.3
+numpy>=2.1.0
 
 # API Client
-requests==2.31.0
+requests>=2.32.0
