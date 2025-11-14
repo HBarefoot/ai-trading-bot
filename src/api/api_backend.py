@@ -148,7 +148,22 @@ async def startup_event():
         data_feed_manager = get_data_feed_manager()
     except Exception as e:
         logger.warning(f"Could not get data feed manager: {e}")
-    
+
+    # Optional: Auto-start trading engine if configured
+    auto_start = os.getenv('AUTO_START_TRADING', 'false').lower() == 'true'
+    if auto_start and trading_engine:
+        try:
+            logger.info("🚀 AUTO_START_TRADING enabled - starting trading engine...")
+            trading_task = asyncio.create_task(trading_engine.start())
+            logger.info("✅ Trading engine auto-started successfully")
+        except Exception as e:
+            logger.error(f"❌ Failed to auto-start trading engine: {e}")
+            logger.warning("Trading engine can be started manually via /api/trading/start")
+    else:
+        if not auto_start:
+            logger.info("ℹ️  Trading engine NOT auto-started (set AUTO_START_TRADING=true to enable)")
+        logger.info("💡 Start trading manually via POST /api/trading/start")
+
     print("AI Trading Bot API started successfully!")
 
 # Basic health and info endpoints
