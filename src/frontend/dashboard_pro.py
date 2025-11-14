@@ -1388,11 +1388,111 @@ def main():
     
     with tab5:
         st.markdown("### 💼 Portfolio Details")
-        if portfolio_data and portfolio_data.get('positions'):
-            positions_df = pd.DataFrame(portfolio_data['positions'])
-            st.dataframe(positions_df, width='stretch', hide_index=True)
+
+        if portfolio_data:
+            # Portfolio Summary Cards
+            col1, col2, col3, col4 = st.columns(4)
+
+            total_value = portfolio_data.get('total_value', 0)
+            cash = portfolio_data.get('cash', portfolio_data.get('cash_balance', 0))
+            positions_value = total_value - cash
+            num_positions = len(portfolio_data.get('positions', []))
+
+            with col1:
+                st.markdown(f"""
+                    <div class="metric-card">
+                        <div class="metric-label">Total Value</div>
+                        <div class="metric-value">${total_value:,.2f}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+
+            with col2:
+                st.markdown(f"""
+                    <div class="metric-card">
+                        <div class="metric-label">Cash Balance</div>
+                        <div class="metric-value">${cash:,.2f}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+
+            with col3:
+                st.markdown(f"""
+                    <div class="metric-card">
+                        <div class="metric-label">Positions Value</div>
+                        <div class="metric-value">${positions_value:,.2f}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+
+            with col4:
+                st.markdown(f"""
+                    <div class="metric-card">
+                        <div class="metric-label">Open Positions</div>
+                        <div class="metric-value">{num_positions}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+
+            st.markdown("---")
+
+            # Portfolio Controls
+            st.markdown("### ⚙️ Portfolio Controls")
+
+            col1, col2 = st.columns([2, 1])
+
+            with col1:
+                new_balance = st.number_input(
+                    "Adjust Cash Balance (for testing)",
+                    min_value=0.0,
+                    max_value=1000000.0,
+                    value=float(cash),
+                    step=1000.0,
+                    help="Adjust your paper trading cash balance for testing different scenarios"
+                )
+
+            with col2:
+                st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
+                if st.button("💰 Update Balance", use_container_width=True):
+                    result = api.post('/api/portfolio/adjust-cash', {'new_balance': new_balance})
+                    if result:
+                        st.success(f"✅ Cash balance updated to ${new_balance:,.2f}")
+                        time.sleep(1)
+                        st.rerun()
+                    else:
+                        st.error("❌ Failed to update balance")
+
+            st.markdown("---")
+
+            # Open Positions Table
+            st.markdown("### 📊 Open Positions")
+            if portfolio_data.get('positions'):
+                positions = portfolio_data['positions']
+
+                # Format positions for display
+                positions_display = []
+                for pos in positions:
+                    positions_display.append({
+                        'Symbol': pos.get('symbol', 'N/A'),
+                        'Amount': f"{pos.get('amount', 0):.6f}",
+                        'Entry Price': f"${pos.get('entry_price', 0):.2f}",
+                        'Current Price': f"${pos.get('current_price', 0):.2f}",
+                        'Value': f"${pos.get('amount', 0) * pos.get('current_price', 0):,.2f}",
+                        'Unrealized P&L': f"${pos.get('unrealized_pnl', 0):,.2f}",
+                        'P&L %': f"{((pos.get('current_price', 0) - pos.get('entry_price', 1)) / pos.get('entry_price', 1) * 100):.2f}%"
+                    })
+
+                positions_df = pd.DataFrame(positions_display)
+                st.dataframe(positions_df, use_container_width=True, hide_index=True)
+            else:
+                st.markdown("""
+                    <div class="metric-card" style="text-align: center; padding: 3rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💼</div>
+                        <div class="metric-label">No Open Positions</div>
+                        <div style="color: rgba(255,255,255,0.6); margin-top: 1rem;">
+                            All cash available for trading.<br>
+                            Bot is monitoring for high-probability entry signals.
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
         else:
-            st.info("No open positions")
+            st.info("📊 Portfolio data requires backend API connection")
 
 
 if __name__ == "__main__":

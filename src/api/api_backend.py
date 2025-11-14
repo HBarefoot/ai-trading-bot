@@ -598,11 +598,11 @@ async def get_portfolio_value():
     """Get portfolio value summary"""
     if not trading_engine:
         raise HTTPException(status_code=503, detail="Trading engine not available")
-    
+
     portfolio = trading_engine.portfolio
     total_value = portfolio.get_portfolio_value()
     total_return = (total_value - portfolio.initial_balance) / portfolio.initial_balance
-    
+
     return {
         "total_value_usdt": total_value,
         "initial_balance": portfolio.initial_balance,
@@ -610,6 +610,42 @@ async def get_portfolio_value():
         "cash_balance": portfolio.cash_balance,
         "positions_count": len(portfolio.positions)
     }
+
+
+@app.post("/api/portfolio/adjust-cash")
+async def adjust_portfolio_cash(request: dict):
+    """Adjust portfolio cash balance (for testing purposes)"""
+    global trading_engine
+
+    try:
+        if not trading_engine:
+            trading_engine = get_trading_engine()
+
+        new_balance = float(request.get('new_balance', 0))
+
+        if new_balance < 0:
+            raise HTTPException(status_code=400, detail="Balance cannot be negative")
+
+        if new_balance > 1000000:
+            raise HTTPException(status_code=400, detail="Balance cannot exceed $1,000,000")
+
+        # Update cash balance in trading engine
+        old_balance = trading_engine.portfolio.cash_balance
+        trading_engine.portfolio.cash_balance = new_balance
+
+        logger.info(f"💰 Portfolio cash adjusted: ${old_balance:,.2f} → ${new_balance:,.2f}")
+
+        return {
+            "success": True,
+            "old_balance": old_balance,
+            "new_balance": new_balance,
+            "message": f"Cash balance updated to ${new_balance:,.2f}"
+        }
+
+    except Exception as e:
+        logger.error(f"Error adjusting portfolio cash: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # Trading History
 @app.get("/api/trades")
