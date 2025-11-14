@@ -66,41 +66,77 @@ trading_task = None
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize services on startup"""
+    """Initialize services on startup with graceful error handling"""
     global trading_engine, exchange_manager, data_feed_manager
     
-    print("Starting AI Trading Bot API...")
+    logger.info("Starting AI Trading Bot API...")
     
-    # Initialize exchange manager with Binance credentials from .env
-    from trading.exchange_integration import initialize_exchanges
-    initialize_exchanges()
-    logger.info("Exchanges initialized with credentials from .env")
-    
-    # Initialize trading engine with AI enhancement
-    trading_engine = get_trading_engine(use_ai=True)  # ✨ AI ENABLED: Technical 40% + LSTM 30% + Sentiment 30%
-    
-    # Pre-load historical 5-minute candles for immediate dashboard display
-    logger.info("Pre-loading historical 5-minute candles from Binance.US...")
     try:
-        symbols_to_load = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']
-        for symbol in symbols_to_load:
-            db_symbol = symbol.replace('USDT', '/USDT')
-            count = get_db_candle_count(db_symbol)
-            if count < 50:  # Less than ~4 hours of data
-                logger.info(f"  {db_symbol}: Only {count} candles in DB, fetching from Binance...")
-                preload_historical_candles_to_db([symbol], hours=8)
-            else:
-                logger.info(f"  {db_symbol}: {count} candles already in DB")
+        # Initialize exchange manager with Binance credentials from .env
+        from trading.exchange_integration import initialize_exchanges
+        initialize_exchanges()
+        logger.info("Exchanges initialized with credentials from .env")
     except Exception as e:
-        logger.warning(f"Could not pre-load historical candles: {e}")
+        logger.warning(f"Could not initialize exchanges: {e}")
     
-    # Start live data feed with Binance.US WebSocket (this will create the data_feed_manager)
-    await start_live_feed(use_mock=False)  # ✅ Real Binance.US WebSocket enabled
+    try:
+        # Initialize trading engine with AI enhancement
+        trading_engine = get_trading_engine(use_ai=True)
+        logger.info("Trading engine initialized")
+    except Exception as e:
+        logger.warning(f"Could not initialize trading engine: {e}")
     
-    # Get the data feed manager reference
-    data_feed_manager = get_data_feed_manager()
+    # Skip database operations if DATABASE_URL is not available
+    db_url = os.getenv('DATABASE_URL')
+    if db_url and not db_url.startswith('postgresql://trader:trading123@localhost'):
+        logger.info("Pre-loading historical 5-minute candles from Binance.US...")
+        try:
+            symbols_to_load = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']
+            for symbol in symbols_to_load:
+                db_symbol = symbol.replace('USDT', '/USDT')
+                count = get_db_candle_count(db_symbol)
+                if count < 50:  # Less than ~4 hours of data
+                    logger.info(f"  {db_symbol}: Only {count} candles in DB, fetching from Binance...")
+                    preload_historical_candles_to_db([symbol], hours=8)
+                else:
+                    logger.info(f"  {db_symbol}: {count} candles already in DB")
+        except Exception as e:
+            logger.warning(f"Could not pre-load historical candles: {e}")
+    else:
+        logger.info("Skipping database operations - no production database configured")
+    
+    # Only start live data feed if API keys are available
+    api_key = os.getenv('BINANCE_API_KEY')
+    if api_key and api_key != 'your_binance_api_key_here':
+        try:
+            # Start live data feed with Binance.US WebSocket
+            await start_live_feed(use_mock=False)
+            logger.info("Live data feed started")
+        except Exception as e:
+            logger.warning(f"Could not start live data feed: {e}")
+    else:
+        logger.info("Skipping live data feed - no valid API keys configured")
+    
+    logger.info("API startup completed with graceful handling")
+    
+    # Get the data feed manager reference safely
+    try:
+        data_feed_manager = get_data_feed_manager()
+    except Exception as e:
+        logger.warning(f"Could not get data feed manager: {e}")
     
     print("AI Trading Bot API started successfully!")
+
+# Basic health and info endpoints
+@app.get("/")
+async def root():
+    """Root endpoint for basic connectivity test"""
+    return {
+        "name": "AI Trading Bot API", 
+        "version": "3.0.0",
+        "status": "online",
+        "timestamp": datetime.now()
+    }
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -131,75 +167,146 @@ async def start_trading(background_tasks: BackgroundTasks):
     """Start the live trading engine"""
     global trading_engine, trading_task
     
-    if not trading_engine:
-        trading_engine = get_trading_engine()
-    
-    if trading_engine.running:
-        raise HTTPException(status_code=400, detail="Trading engine is already running")
-    
-    # Start trading in background
-    trading_task = asyncio.create_task(trading_engine.start())
-    
-    return {
-        "status": "started",
-        "message": "Live trading engine started",
-        "timestamp": datetime.now()
-    }
+    try:
+        if not trading_engine:
+            trading_engine = get_trading_engine()
+        
+        if trading_engine and getattr(trading_engine, 'running', False):
+            raise HTTPException(status_code=400, detail="Trading engine is already running")
+        
+        # Start trading in background
+        trading_task = asyncio.create_task(trading_engine.start())
+        
+        return {
+            "status": "started",
+            "message": "Live trading engine started",
+            "timestamp": datetime.now()
+        }
+    except Exception as e:
+        logger.error(f"Failed to start trading engine: {e}")
+        return {
+            "status": "error",
+            "message": f"Failed to start trading engine: {str(e)}",
+            "timestamp": datetime.now()
+        }
 
 @app.post("/api/trading/stop")
 async def stop_trading():
     """Stop the live trading engine"""
     global trading_engine, trading_task
     
-    if not trading_engine or not trading_engine.running:
-        raise HTTPException(status_code=400, detail="Trading engine is not running")
-    
-    await trading_engine.stop()
-    
-    if trading_task:
-        trading_task.cancel()
-        trading_task = None
-    
-    return {
-        "status": "stopped",
-        "message": "Live trading engine stopped",
-        "timestamp": datetime.now()
-    }
+    try:
+        if not trading_engine or not getattr(trading_engine, 'running', False):
+            raise HTTPException(status_code=400, detail="Trading engine is not running")
+        
+        await trading_engine.stop()
+        
+        if trading_task:
+            trading_task.cancel()
+            trading_task = None
+        
+        return {
+            "status": "stopped",
+            "message": "Live trading engine stopped",
+            "timestamp": datetime.now()
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to stop trading engine: {e}")
+        return {
+            "status": "error",
+            "message": f"Failed to stop trading engine: {str(e)}",
+            "timestamp": datetime.now()
+        }
 
 @app.get("/api/status")
 async def get_status():
-    """Get system status"""
+    """Get system status with robust error handling"""
     global trading_engine, exchange_manager, data_feed_manager
     
     try:
-        if trading_engine is None:
-            trading_engine = get_trading_engine()
-        # exchange_manager is already imported as global
-        if data_feed_manager is None:
-            data_feed_manager = get_data_feed_manager()
+        # Safely check trading engine
+        engine_status = "stopped"
+        paper_trading = True
         
-        # Check if trading engine is actually running, not just exists
-        engine_status = "active" if (trading_engine and trading_engine.running) else "stopped"
+        try:
+            if trading_engine is None:
+                trading_engine = get_trading_engine()
+            engine_status = "active" if (trading_engine and getattr(trading_engine, 'running', False)) else "stopped"
+            paper_trading = getattr(trading_engine, 'paper_trading', True)
+        except Exception as e:
+            logger.warning(f"Could not get trading engine status: {e}")
         
-        # Check paper trading mode
-        paper_trading = trading_engine.paper_trading if trading_engine else True
+        # Safely check exchange
+        exchange_status = "disconnected"
+        try:
+            if exchange_manager and hasattr(exchange_manager, 'get_exchange'):
+                exchange_status = "connected" if exchange_manager.get_exchange() else "disconnected"
+        except Exception as e:
+            logger.warning(f"Could not get exchange status: {e}")
+        
+        # Safely check data feed
+        data_feed_status = "inactive"
+        try:
+            if data_feed_manager is None:
+                data_feed_manager = get_data_feed_manager()
+            data_feed_status = "active" if data_feed_manager else "inactive"
+        except Exception as e:
+            logger.warning(f"Could not get data feed status: {e}")
         
         return {
             "status": "running",
             "timestamp": datetime.now(),
             "trading_engine": engine_status,
-            "paper_trading": paper_trading,  # NEW: Paper trading indicator
-            "mode": "PAPER TRADING" if paper_trading else "LIVE TRADING",  # NEW: Clear mode label
-            "exchange": "connected" if exchange_manager.get_exchange() else "disconnected",
-            "data_feed": "active" if data_feed_manager else "inactive"
+            "paper_trading": paper_trading,
+            "mode": "PAPER TRADING" if paper_trading else "LIVE TRADING",
+            "exchange": exchange_status,
+            "data_feed": data_feed_status
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Status check failed: {e}")
+        # Return a minimal status even if everything fails
+        return {
+            "status": "running",
+            "timestamp": datetime.now(),
+            "trading_engine": "stopped",
+            "paper_trading": True,
+            "mode": "PAPER TRADING",
+            "exchange": "disconnected", 
+            "data_feed": "inactive",
+            "error": str(e)
+        }
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint for deployment"""
-    return {"status": "healthy", "timestamp": datetime.now()}
+    """Health check endpoint for Railway deployment"""
+    return {
+        "status": "healthy", 
+        "timestamp": datetime.now(),
+        "service": "AI Trading Bot API",
+        "version": "3.0.0"
+    }
+
+@app.get("/api/health")
+async def api_health_check():
+    """Detailed API health check"""
+    try:
+        return {
+            "status": "healthy",
+            "timestamp": datetime.now(),
+            "version": "3.0.0",
+            "services": {
+                "trading_engine": getattr(trading_engine, 'running', False) if trading_engine else False,
+                "exchange": "connected" if (exchange_manager and hasattr(exchange_manager, 'get_exchange') and exchange_manager.get_exchange()) else "disconnected"
+            }
+        }
+    except Exception as e:
+        return {
+            "status": "degraded",
+            "timestamp": datetime.now(),
+            "error": str(e)
+        }
 
 # Portfolio Management
 @app.on_event("shutdown")
