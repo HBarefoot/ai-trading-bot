@@ -475,32 +475,35 @@ class APIClient:
     """API client for backend communication"""
     
     def __init__(self, base_url: str = None):
-        # For local development, always use localhost
-        # Try to get API URL from secrets (Streamlit Cloud or Railway)
+        # Smart API URL detection for both local and production
         if base_url is None:
-            # Force localhost for local development
-            base_url = "http://localhost:9000"
-            logger.info(f"Using localhost API for local development: {base_url}")
-            
-            # Comment out the production logic for now
-            # try:
-            #     # Streamlit secrets access - try both possible locations
-            #     if hasattr(st, 'secrets') and 'api_url' in st.secrets:
-            #         base_url = st.secrets["api_url"]
-            #         logger.info(f"Loaded API URL from secrets: {base_url}")
-            #     else:
-            #         raise KeyError("api_url not found in secrets")
-            # except Exception as e:
-            #     # Try environment variable for deployed environments
-            #     import os
-            #     env_api_url = os.getenv('API_URL', os.getenv('API_BASE_URL'))
-            #     if env_api_url:
-            #         base_url = env_api_url
-            #         logger.info(f"Using API URL from environment: {base_url}")
-            #     else:
-            #         # Fallback to localhost for local development
-            #         base_url = "http://localhost:9000"
-            #         logger.warning(f"Using localhost API (no secrets/env found: {e})")
+            try:
+                # Check if we're in local development (try localhost first)
+                import requests
+                try:
+                    test_response = requests.get("http://localhost:9000/api/status", timeout=2)
+                    if test_response.status_code == 200:
+                        base_url = "http://localhost:9000"
+                        logger.info(f"Using local development API: {base_url}")
+                except:
+                    # Local API not available, try production
+                    # Streamlit secrets access - try both possible locations
+                    if hasattr(st, 'secrets') and 'api_url' in st.secrets:
+                        base_url = st.secrets["api_url"]
+                        logger.info(f"Loaded API URL from secrets: {base_url}")
+                    else:
+                        raise KeyError("api_url not found in secrets")
+            except Exception as e:
+                # Try environment variable for deployed environments
+                import os
+                env_api_url = os.getenv('API_URL', os.getenv('API_BASE_URL'))
+                if env_api_url:
+                    base_url = env_api_url
+                    logger.info(f"Using API URL from environment: {base_url}")
+                else:
+                    # Final fallback to localhost for local development
+                    base_url = "http://localhost:9000"
+                    logger.warning(f"Using localhost API fallback (no secrets/env found: {e})")
         self.base_url = base_url
         logger.info(f"APIClient initialized with base_url: {self.base_url}")
     
