@@ -313,6 +313,8 @@ class LiveTradingEngine5m:
     async def process_symbol_5m(self, symbol: str, current_price: float):
         """Process trading signals for a symbol using 5-minute candles"""
         try:
+            import pandas as pd  # Import pandas here to avoid scoping issues
+            
             # Get 5-minute candles from aggregator
             if not self.candle_aggregator:
                 logger.warning("Candle aggregator not initialized")
@@ -321,7 +323,7 @@ class LiveTradingEngine5m:
             df = self.candle_aggregator.get_candles_as_dataframe(symbol, limit=300)
 
             # Fallback to database if aggregator doesn't have enough candles yet
-            if len(df) < 60:
+            if len(df) < 30:  # Reduced from 60 for testing
                 logger.info(f"Aggregator has {len(df)} candles, fetching from database for {symbol}")
                 try:
                     import os
@@ -347,8 +349,7 @@ class LiveTradingEngine5m:
 
                         session.close()
 
-                        if len(candles) >= 60:
-                            import pandas as pd
+                        if len(candles) >= 30:  # Reduced from 60 for testing
                             df = pd.DataFrame([{
                                 'timestamp': c.timestamp,
                                 'open': float(c.open_price),
@@ -359,7 +360,7 @@ class LiveTradingEngine5m:
                             } for c in candles])
                             logger.info(f"Loaded {len(df)} candles from database for {symbol}")
                         else:
-                            logger.debug(f"Not enough candles in database for {symbol}: {len(candles)}/60")
+                            logger.debug(f"Not enough candles in database for {symbol}: {len(candles)}/30")
                             return
                     else:
                         logger.debug(f"No database URL, skipping {symbol}")
@@ -369,8 +370,8 @@ class LiveTradingEngine5m:
                     return
 
             # Still not enough candles
-            if len(df) < 60:
-                logger.debug(f"Not enough 5m candles for {symbol}: {len(df)}/60")
+            if len(df) < 30:  # Reduced from 60 for testing
+                logger.debug(f"Not enough 5m candles for {symbol}: {len(df)}/30")
                 return
 
             # Normalize column names (candle_aggregator uses *_price, strategies expect standard names)

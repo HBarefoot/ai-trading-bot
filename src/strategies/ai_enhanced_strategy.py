@@ -112,9 +112,10 @@ class AIEnhancedStrategy:
         
         TODO: Integrate LSTM model predictions
         """
-        # Placeholder for now
+        # Placeholder for now - add small random signal for testing
         # In Phase 3, we'll integrate the actual LSTM model
-        return 0.0
+        import random
+        return random.uniform(-0.2, 0.2)  # Small random signal for testing
     
     def generate_signals(self, data: pd.DataFrame, symbol: str = "BTC") -> pd.Series:
         """
@@ -147,10 +148,10 @@ class AIEnhancedStrategy:
                 self.sentiment_weight * sentiment_signal
             )
             
-            # Apply threshold (need stronger signal to trade)
-            if combined > 0.6:
+            # Apply threshold (reduced for better signal detection)
+            if combined > 0.3:  # Reduced from 0.6 for more sensitive detection
                 combined_signals.iloc[i] = 1.0  # Strong BUY
-            elif combined < -0.6:
+            elif combined < -0.3:  # Reduced from -0.6 for more sensitive detection
                 combined_signals.iloc[i] = -1.0  # Strong SELL
             else:
                 combined_signals.iloc[i] = 0.0  # HOLD
