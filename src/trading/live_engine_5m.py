@@ -501,13 +501,24 @@ class LiveTradingEngine5m:
             
             logger.info(f"💰 Executing BUY for {symbol}: {amount:.6f} @ ${price:.2f} (${position_value:.2f})")
 
-            # Place order
-            order_result = await self.exchange.place_order(
-                symbol=symbol,
-                side='BUY',
-                amount=amount * price,  # Amount in USDT for market order
-                price=None  # Market order
-            )
+            # Check if paper trading mode
+            if self.paper_trading:
+                # Simulate successful order in paper trading mode
+                order_result = {
+                    'order_id': f'paper_buy_{symbol}_{int(datetime.now().timestamp())}',
+                    'status': 'filled',
+                    'filled_amount': amount,
+                    'filled_price': price
+                }
+                logger.info(f"📄 PAPER TRADE: Simulated BUY order for {symbol}")
+            else:
+                # Place real order
+                order_result = await self.exchange.place_order(
+                    symbol=symbol,
+                    side='BUY',
+                    amount=amount * price,  # Amount in USDT for market order
+                    price=None  # Market order
+                )
 
             if 'error' not in order_result:
                 # Open position in portfolio
@@ -556,13 +567,24 @@ class LiveTradingEngine5m:
 
             position = self.portfolio.positions[symbol]
 
-            # Place sell order
-            order_result = await self.exchange.place_order(
-                symbol=symbol,
-                side='SELL',
-                amount=position.amount,
-                price=None  # Market order
-            )
+            # Check if paper trading mode
+            if self.paper_trading:
+                # Simulate successful order in paper trading mode
+                order_result = {
+                    'order_id': f'paper_sell_{symbol}_{int(datetime.now().timestamp())}',
+                    'status': 'filled',
+                    'filled_amount': position.amount,
+                    'filled_price': price
+                }
+                logger.info(f"📄 PAPER TRADE: Simulated SELL order for {symbol}")
+            else:
+                # Place real sell order
+                order_result = await self.exchange.place_order(
+                    symbol=symbol,
+                    side='SELL',
+                    amount=position.amount,
+                    price=None  # Market order
+                )
 
             if 'error' not in order_result:
                 # Calculate P&L
