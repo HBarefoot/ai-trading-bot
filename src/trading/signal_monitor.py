@@ -409,8 +409,12 @@ class SignalMonitor:
             logger.error(f"Error saving alert: {e}")
 
     def _save_signal_state(self, state: SignalState):
-        """Save signal state to file"""
+        """Save signal state to file and database"""
         try:
+            # Save to database
+            self._save_signal_to_db(state)
+
+            # Save to JSON file (legacy)
             states = {}
             if self.signals_file.exists():
                 try:
@@ -505,6 +509,57 @@ class SignalMonitor:
                 
         except Exception as e:
             logger.error(f"Error loading signal states: {e}")
+
+    def _save_signal_to_db(self, state: SignalState):
+        """Save signal to database"""
+        try:
+            import os
+            db_url = os.getenv('DATABASE_URL')
+            if not db_url:
+                return  # No database configured
+
+            from sqlalchemy import create_engine
+            from sqlalchemy.orm import sessionmaker
+            from data.models import Signal
+            from datetime import datetime
+
+            engine = create_engine(db_url)
+            Session = sessionmaker(bind=engine)
+            session = Session()
+
+            try:
+                # Convert numpy types to native Python types
+                def convert_value(val):
+                    if val is None:
+                        return None
+                    if hasattr(val, 'item'):  # numpy types
+                        return val.item()
+                    try:
+                        return float(val)
+                    except (ValueError, TypeError):
+                        return None
+
+                # Create signal record
+                signal = Signal(
+                    symbol=state.symbol,
+                    signal_type=state.signal_type.value,
+                    signal_value=convert_value(state.current_signal),
+                    price=convert_value(state.price),
+                    rsi=convert_value(state.rsi),
+                    ma_fast=convert_value(state.ma_fast),
+                    ma_slow=convert_value(state.ma_slow),
+                    trend=state.trend,
+                    timestamp=state.last_change if isinstance(state.last_change, datetime) else datetime.now()
+                )
+
+                session.add(signal)
+                session.commit()
+
+            finally:
+                session.close()
+
+        except Exception as e:
+            logger.error(f"Error saving signal to database: {e}")
 
 
 # Global signal monitor

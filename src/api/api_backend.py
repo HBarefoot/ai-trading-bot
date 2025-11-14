@@ -1400,26 +1400,53 @@ async def get_all_signals():
         from trading.signal_monitor import get_signal_monitor
         signal_monitor = get_signal_monitor()
         
-        # Get current signal states
+        # Get current signal states from memory
         current_signals = signal_monitor.get_current_signals()
-        
+
+        # Format signals - try memory first, fallback to database
+        signals_list = []
+        if current_signals:
+            # Use in-memory signals
+            for symbol, state in current_signals.items():
+                signals_list.append({
+                    "symbol": symbol,
+                    "signal": float(state.current_signal),
+                    "signal_type": state.signal_type.value,
+                    "price": float(state.price),
+                    "rsi": float(state.rsi) if state.rsi is not None else None,
+                    "ma_fast": float(state.ma_fast) if state.ma_fast is not None else None,
+                    "ma_slow": float(state.ma_slow) if state.ma_slow is not None else None,
+                    "trend": state.trend,
+                    "last_change": state.last_change.isoformat()
+                })
+        else:
+            # Fallback to database for latest signals
+            try:
+                from data.models import Signal
+                from sqlalchemy import desc
+
+                # Get most recent signal for each symbol
+                symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']
+                for symbol in symbols:
+                    latest = session.query(Signal).filter_by(symbol=symbol).order_by(desc(Signal.timestamp)).first()
+                    if latest:
+                        signals_list.append({
+                            "symbol": latest.symbol,
+                            "signal": float(latest.signal_value),
+                            "signal_type": latest.signal_type,
+                            "price": float(latest.price),
+                            "rsi": float(latest.rsi) if latest.rsi else None,
+                            "ma_fast": float(latest.ma_fast) if latest.ma_fast else None,
+                            "ma_slow": float(latest.ma_slow) if latest.ma_slow else None,
+                            "trend": latest.trend,
+                            "last_change": latest.timestamp.isoformat()
+                        })
+                logger.info(f"Loaded {len(signals_list)} signals from database")
+            except Exception as e:
+                logger.error(f"Error loading signals from database: {e}")
+
         # Get recent alerts
         recent_alerts = signal_monitor.get_recent_alerts(limit=20)
-        
-        # Format signals
-        signals_list = []
-        for symbol, state in current_signals.items():
-            signals_list.append({
-                "symbol": symbol,
-                "signal": float(state.current_signal),
-                "signal_type": state.signal_type.value,
-                "price": float(state.price),
-                "rsi": float(state.rsi) if state.rsi is not None else None,
-                "ma_fast": float(state.ma_fast) if state.ma_fast is not None else None,
-                "ma_slow": float(state.ma_slow) if state.ma_slow is not None else None,
-                "trend": state.trend,
-                "last_change": state.last_change.isoformat()
-            })
         
         # Format alerts
         alerts_list = []

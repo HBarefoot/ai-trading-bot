@@ -83,3 +83,26 @@ class Strategy(Base):
 
     def __repr__(self):
         return f"<Strategy(name={self.name}, total_trades={self.total_trades})>"
+
+
+class Signal(Base):
+    """Trading signals tracking"""
+    __tablename__ = 'signals'
+    __table_args__ = (
+        Index('idx_signals_symbol_timestamp', 'symbol', 'timestamp'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    symbol = Column(String(20), nullable=False)
+    signal_type = Column(String(10), nullable=False)  # 'BUY', 'SELL', 'HOLD'
+    signal_value = Column(Numeric(10, 4), nullable=False)  # Numerical signal (-1 to 1)
+    price = Column(Numeric(20, 8), nullable=False)
+    rsi = Column(Numeric(10, 4))
+    ma_fast = Column(Numeric(20, 8))
+    ma_slow = Column(Numeric(20, 8))
+    trend = Column(String(20))
+    timestamp = Column(DateTime(timezone=True), nullable=False, default=func.now())
+    created_at = Column(DateTime(timezone=True), default=func.now())
+
+    def __repr__(self):
+        return f"<Signal(symbol={self.symbol}, type={self.signal_type}, price={self.price})>"
