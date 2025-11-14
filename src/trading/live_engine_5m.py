@@ -320,7 +320,55 @@ class LiveTradingEngine5m:
 
             df = self.candle_aggregator.get_candles_as_dataframe(symbol, limit=300)
 
-            # Need at least 60 candles for HTF filter (MA50 on 5m data)
+            # Fallback to database if aggregator doesn't have enough candles yet
+            if len(df) < 60:
+                logger.info(f"Aggregator has {len(df)} candles, fetching from database for {symbol}")
+                try:
+                    import os
+                    from sqlalchemy import create_engine, desc
+                    from sqlalchemy.orm import sessionmaker
+                    from data.models import MarketData
+                    from datetime import datetime, timedelta
+
+                    db_url = os.getenv('DATABASE_URL')
+                    if db_url:
+                        engine = create_engine(db_url)
+                        Session = sessionmaker(bind=engine)
+                        session = Session()
+
+                        # Get last 300 5-minute candles from database
+                        db_symbol = symbol.replace('USDT', '/USDT')
+                        cutoff = datetime.now() - timedelta(hours=25)
+
+                        candles = session.query(MarketData).filter(
+                            MarketData.symbol == db_symbol,
+                            MarketData.timestamp >= cutoff
+                        ).order_by(MarketData.timestamp).limit(300).all()
+
+                        session.close()
+
+                        if len(candles) >= 60:
+                            import pandas as pd
+                            df = pd.DataFrame([{
+                                'timestamp': c.timestamp,
+                                'open': float(c.open_price),
+                                'high': float(c.high_price),
+                                'low': float(c.low_price),
+                                'close': float(c.close_price),
+                                'volume': float(c.volume)
+                            } for c in candles])
+                            logger.info(f"Loaded {len(df)} candles from database for {symbol}")
+                        else:
+                            logger.debug(f"Not enough candles in database for {symbol}: {len(candles)}/60")
+                            return
+                    else:
+                        logger.debug(f"No database URL, skipping {symbol}")
+                        return
+                except Exception as e:
+                    logger.error(f"Error loading candles from database: {e}")
+                    return
+
+            # Still not enough candles
             if len(df) < 60:
                 logger.debug(f"Not enough 5m candles for {symbol}: {len(df)}/60")
                 return
