@@ -529,11 +529,20 @@ def fetch_chart_data(symbol: str, limit: int = 200) -> pd.DataFrame:
         response = requests.get(f'{api_url}/api/candles/{symbol}?limit={limit}', timeout=5)
         if response.status_code == 200:
             data = response.json()
-            if data.get('candles'):
-                df = pd.DataFrame(data['candles'])
+
+            # Handle both response formats: direct array or wrapped object
+            if isinstance(data, list):
+                candles = data  # Direct array response
+            elif isinstance(data, dict) and 'candles' in data:
+                candles = data['candles']  # Wrapped in object
+            else:
+                return pd.DataFrame()
+
+            if candles:
+                df = pd.DataFrame(candles)
                 # Ensure timestamp is datetime with flexible ISO8601 parsing
                 if 'timestamp' in df.columns:
-                    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+                    df['timestamp'] = pd.to_datetime(df['timestamp'])
                 return df
     except Exception as e:
         print(f"Error fetching chart data: {e}")
