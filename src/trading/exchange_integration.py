@@ -13,8 +13,14 @@ load_dotenv(dotenv_path)
 
 import ccxt
 import asyncio
-from binance.client import Client as BinanceClient
-from binance.enums import *
+try:
+    from binance.client import Client as BinanceClient
+    from binance.enums import *
+    BINANCE_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: Binance client not available: {e}")
+    BinanceClient = None
+    BINANCE_AVAILABLE = False
 from typing import Dict, List, Optional, Tuple
 import pandas as pd
 from datetime import datetime
@@ -59,35 +65,46 @@ class BinanceExchange(ExchangeInterface):
             testnet: Use testnet (default True for safety)
             use_us: Use Binance.US endpoint (default True for US users)
         """
+        if not BINANCE_AVAILABLE:
+            logger.warning("Binance client not available - running in demo mode")
+            self.demo_mode = True
+            self.client = None
+            return
+            
         self.api_key = api_key or os.getenv("BINANCE_API_KEY")
         self.api_secret = api_secret or os.getenv("BINANCE_SECRET_KEY")  # ✅ Fixed to match .env file
         self.testnet = testnet
         self.use_us = use_us
         
-        if not self.api_key or not self.api_secret:
-            logger.warning("Binance API credentials not found. Using demo mode.")
+        if not self.api_key or not self.api_secret or self.api_key == 'your_binance_api_key_here':
+            logger.warning("Binance API credentials not found or using placeholders. Using demo mode.")
             self.demo_mode = True
             self.client = None
         else:
             self.demo_mode = False
-            # Configure API endpoint based on region
-            if use_us:
-                # Binance.US endpoint
-                logger.info("Configuring Binance.US endpoint for US users")
-                self.client = BinanceClient(
-                    self.api_key, 
-                    self.api_secret,
-                    tld='us',  # Use Binance.US domain
-                    requests_params={'timeout': 30}  # Increase timeout to 30 seconds
-                )
-            else:
-                # Regular Binance endpoint
-                self.client = BinanceClient(
-                    self.api_key, 
-                    self.api_secret,
-                    testnet=testnet,
-                    requests_params={'timeout': 30}
-                )
+            try:
+                # Configure API endpoint based on region
+                if use_us:
+                    # Binance.US endpoint
+                    logger.info("Configuring Binance.US endpoint for US users")
+                    self.client = BinanceClient(
+                        self.api_key, 
+                        self.api_secret,
+                        tld='us',  # Use Binance.US domain
+                        requests_params={'timeout': 30}  # Increase timeout to 30 seconds
+                    )
+                else:
+                    # Regular Binance endpoint
+                    self.client = BinanceClient(
+                        self.api_key, 
+                        self.api_secret,
+                        testnet=testnet,
+                        requests_params={'timeout': 30}
+                    )
+            except Exception as e:
+                logger.error(f"Failed to initialize Binance client: {e}")
+                self.demo_mode = True
+                self.client = None
     
     async def get_balance(self) -> Dict:
         """Get account balance"""
@@ -299,12 +316,19 @@ def initialize_exchanges():
     """Initialize and register all exchange connections"""
     global exchange_manager
     
-    # Initialize Binance.US exchange (for US users)
-    # Using use_us=True to connect to Binance.US endpoint instead of regular Binance
-    binance = BinanceExchange(testnet=False, use_us=True)  # ✅ Binance.US for real trading
-    exchange_manager.add_exchange('binance', binance, is_default=True)
+    if not BINANCE_AVAILABLE:
+        logger.warning("Binance client not available - skipping exchange initialization")
+        return exchange_manager
     
-    logger.info("Exchanges initialized")
+    try:
+        # Initialize Binance.US exchange (for US users)
+        # Using use_us=True to connect to Binance.US endpoint instead of regular Binance
+        binance = BinanceExchange(testnet=False, use_us=True)  # ✅ Binance.US for real trading
+        exchange_manager.add_exchange('binance', binance, is_default=True)
+        logger.info("Exchanges initialized successfully")
+    except Exception as e:
+        logger.warning(f"Failed to initialize exchanges: {e}")
+    
     return exchange_manager
 
 # DON'T initialize on import - API backend will call this after loading .env
