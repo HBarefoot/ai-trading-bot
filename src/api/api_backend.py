@@ -1425,10 +1425,12 @@ async def get_all_signals():
                 from data.models import Signal
                 from sqlalchemy import desc
 
+                db = next(get_db())
+
                 # Get most recent signal for each symbol
                 symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']
                 for symbol in symbols:
-                    latest = session.query(Signal).filter_by(symbol=symbol).order_by(desc(Signal.timestamp)).first()
+                    latest = db.query(Signal).filter_by(symbol=symbol).order_by(desc(Signal.timestamp)).first()
                     if latest:
                         signals_list.append({
                             "symbol": latest.symbol,
@@ -1443,7 +1445,7 @@ async def get_all_signals():
                         })
                 logger.info(f"Loaded {len(signals_list)} signals from database")
             except Exception as e:
-                logger.error(f"Error loading signals from database: {e}")
+                logger.error(f"Error loading signals from database: {e}", exc_info=True)
 
         # Get recent alerts
         recent_alerts = signal_monitor.get_recent_alerts(limit=20)
