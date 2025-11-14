@@ -32,18 +32,28 @@ from data.historical_candles import preload_historical_candles_to_db, get_db_can
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
-# AI modules
-from ai.sentiment_analyzer import sentiment_analyzer
-from ai.data_collectors import news_collector, reddit_collector
-from ai.market_commentary import market_commentary
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# AI modules - with graceful fallback
+try:
+    from ai.sentiment_analyzer import sentiment_analyzer
+    from ai.data_collectors import news_collector, reddit_collector
+    from ai.market_commentary import market_commentary
+    AI_AVAILABLE = True
+    logger.info("AI modules loaded successfully")
+except ImportError as e:
+    logger.warning(f"AI modules not available: {e}. Running without AI features.")
+    sentiment_analyzer = None
+    news_collector = None
+    reddit_collector = None
+    market_commentary = None
+    AI_AVAILABLE = False
 
 # Initialize global variables
 trading_engine = None
 data_feed_manager = None
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="AI Trading Bot API",
@@ -1029,9 +1039,20 @@ async def get_ai_sentiment(symbol: str):
 @app.get("/api/ai/sentiment/{symbol}/full")
 async def get_ai_sentiment_full(symbol: str):
     """Get FULL AI sentiment analysis with real LLM (may take 30+ seconds)"""
+    if not AI_AVAILABLE or not news_collector or not reddit_collector:
+        return {
+            "symbol": symbol,
+            "sentiment": 0.0,
+            "confidence": 0.0,
+            "reason": "AI features not available - missing dependencies",
+            "sources": [],
+            "timestamp": datetime.now().isoformat(),
+            "error": "AI modules not loaded"
+        }
+
     try:
         logger.info(f"Getting FULL AI sentiment for {symbol} (this may take 30+ seconds)")
-        
+
         # Collect data (reduced limits for speed)
         news = news_collector.collect_headlines(symbol, hours=24, max_results=3)
         reddit = reddit_collector.collect_posts(symbol, hours=24, max_results=3)
@@ -1153,6 +1174,18 @@ Technical indicators suggest continued consolidation with potential breakout opp
 @app.get("/api/ai/commentary/daily/full")
 async def get_daily_commentary_full():
     """Get REAL AI-generated daily market summary using Ollama LLM"""
+    if not AI_AVAILABLE or not market_commentary:
+        return {
+            "commentary": "AI commentary not available - missing dependencies",
+            "portfolio_value": 10000.0,
+            "daily_pnl": 0.0,
+            "daily_pnl_pct": 0.0,
+            "trades_count": 0,
+            "timestamp": datetime.now().isoformat(),
+            "mode": "unavailable",
+            "error": "AI modules not loaded"
+        }
+
     try:
         logger.info("Generating FULL AI daily commentary")
         
@@ -1202,10 +1235,10 @@ async def get_daily_commentary_full():
         daily_pnl_pct = (daily_pnl / 10000.0) * 100 if portfolio_value > 0 else 0.0
         
         db.close()
-        
+
         # Generate REAL AI commentary using market_commentary
-        from ai.market_commentary import market_commentary
-        
+        # (already imported at top with graceful fallback)
+
         # Prepare top performers
         top_performers = [
             {
