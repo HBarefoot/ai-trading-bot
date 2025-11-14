@@ -920,15 +920,21 @@ def render_price_charts(api: 'APIClient'):
     
     # Fetch data
     df = fetch_chart_data(symbol, limit=200)
-    
-    if df.empty or len(df) < 50:
-        st.markdown("""
+
+    # Show progress if less than minimum candles
+    candle_count = len(df)
+    min_candles = 20  # Reduced from 50 for faster display
+
+    if df.empty or candle_count < min_candles:
+        progress_pct = (candle_count / min_candles) * 100 if candle_count > 0 else 0
+        st.markdown(f"""
             <div class="metric-card" style="text-align: center; padding: 3rem;">
                 <div style="font-size: 3rem; margin-bottom: 1rem;">⏳</div>
                 <div class="metric-label">Building Price History</div>
                 <div style="color: rgba(255,255,255,0.6); margin-top: 1rem;">
                     System is accumulating candle data from Binance.US<br>
-                    Chart will appear after sufficient data collection.
+                    <strong>{candle_count} / {min_candles} candles collected</strong> ({progress_pct:.0f}%)<br>
+                    Chart will appear in ~{(min_candles - candle_count) * 5} minutes
                 </div>
             </div>
         """, unsafe_allow_html=True)
