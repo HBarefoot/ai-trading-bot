@@ -82,16 +82,16 @@ async def startup_event():
                 from data.database import create_tables, engine
                 from sqlalchemy import text, inspect
                 
-                # Create tables
+                # Create tables in public schema
                 create_tables()
                 
                 # Verify tables were created
                 inspector = inspect(engine)
-                tables = inspector.get_table_names(schema='trading')
-                logger.info(f"Database schema initialized - Tables: {tables}")
+                tables = inspector.get_table_names(schema='public')
+                logger.info(f"Database initialized - Public schema tables: {tables}")
                 
                 if not tables:
-                    logger.error("No tables found after creation! Check schema and permissions.")
+                    logger.error("No tables found in public schema after creation!")
             except Exception as e:
                 logger.error(f"Could not initialize database schema: {e}", exc_info=True)
         else:
@@ -115,24 +115,20 @@ async def init_database():
         from data.database import create_tables, engine
         from sqlalchemy import text, inspect
         
-        # Create schema and tables
+        # Create tables in public schema
         create_tables()
         
         # Check what was created
         inspector = inspect(engine)
-        
-        # Check trading schema
-        trading_tables = inspector.get_table_names(schema='trading')
         
         # Check public schema (Railway default)
         public_tables = inspector.get_table_names(schema='public')
         
         return {
             "status": "success",
-            "message": "Database initialization attempted",
-            "trading_schema_tables": trading_tables,
-            "public_schema_tables": public_tables,
-            "schemas": inspector.get_schema_names()
+            "message": "Database tables created in public schema",
+            "tables": public_tables,
+            "table_count": len(public_tables)
         }
     except Exception as e:
         logger.error(f"Database initialization failed: {e}", exc_info=True)

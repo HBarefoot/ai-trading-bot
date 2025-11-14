@@ -28,21 +28,16 @@ engine = create_engine(
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Metadata
-metadata = MetaData(schema='trading')
+# Metadata (use public schema - Railway default)
+metadata = MetaData()
 
 
 def create_tables():
     """Create all tables in the database"""
     try:
-        # Create schema if it doesn't exist
-        with engine.connect() as conn:
-            conn.execute(text("CREATE SCHEMA IF NOT EXISTS trading"))
-            conn.commit()
-        
-        # Create all tables
+        # Create all tables in public schema (Railway default)
         Base.metadata.create_all(bind=engine)
-        logger.info("Database tables created successfully")
+        logger.info("Database tables created successfully in public schema")
     except Exception as e:
         logger.error(f"Error creating tables: {e}")
         raise

@@ -15,7 +15,6 @@ class MarketData(Base):
     __tablename__ = 'market_data'
     __table_args__ = (
         Index('idx_market_data_symbol_timestamp', 'symbol', 'timestamp'),
-        {'schema': 'trading'}
     )
 
     id = Column(Integer, primary_key=True)
@@ -37,7 +36,6 @@ class Trade(Base):
     __tablename__ = 'trades'
     __table_args__ = (
         CheckConstraint("side IN ('buy', 'sell')", name='check_trade_side'),
-        {'schema': 'trading'}
     )
 
     id = Column(Integer, primary_key=True)
@@ -57,7 +55,6 @@ class Trade(Base):
 class Portfolio(Base):
     """Portfolio tracking model"""
     __tablename__ = 'portfolio'
-    __table_args__ = {'schema': 'trading'}
 
     id = Column(Integer, primary_key=True)
     symbol = Column(String(20), nullable=False, unique=True)
@@ -72,7 +69,6 @@ class Portfolio(Base):
 class Strategy(Base):
     """Strategy performance tracking"""
     __tablename__ = 'strategies'
-    __table_args__ = {'schema': 'trading'}
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False, unique=True)

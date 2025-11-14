@@ -485,9 +485,16 @@ class APIClient:
                 else:
                     raise KeyError("api_url not found in secrets")
             except Exception as e:
-                # Fallback to localhost for local development
-                base_url = "http://localhost:9000"
-                logger.warning(f"Using localhost API (secrets error: {e})")
+                # Try environment variable for deployed environments
+                import os
+                env_api_url = os.getenv('API_URL', os.getenv('API_BASE_URL'))
+                if env_api_url:
+                    base_url = env_api_url
+                    logger.info(f"Using API URL from environment: {base_url}")
+                else:
+                    # Fallback to localhost for local development
+                    base_url = "http://localhost:9000"
+                    logger.warning(f"Using localhost API (no secrets/env found: {e})")
         self.base_url = base_url
         logger.info(f"APIClient initialized with base_url: {self.base_url}")
     

@@ -196,6 +196,11 @@ async def get_status():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for deployment"""
+    return {"status": "healthy", "timestamp": datetime.now()}
+
 # Portfolio Management
 @app.on_event("shutdown")
 async def shutdown_event():
