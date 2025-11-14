@@ -671,6 +671,82 @@ async def get_trades(limit: int = 50):
     db.close()
     return trade_list
 
+@app.get("/api/trade-cycles")
+async def get_trade_cycles(limit: int = 50):
+    """Get processed trade cycles with proper P&L calculations"""
+    db = next(get_db())
+    
+    # Get all trades ordered by timestamp
+    all_trades = db.query(Trade).order_by(Trade.timestamp.asc()).all()
+    
+    # Process trades into cycles
+    trade_cycles = []
+    open_positions = {}  # symbol -> buy_trade
+    
+    for trade in all_trades:
+        symbol = trade.symbol
+        side = trade.side.lower()
+        
+        if side == 'buy':
+            # Opening a position
+            open_positions[symbol] = trade
+            
+        elif side == 'sell' and symbol in open_positions:
+            # Closing a position - create completed cycle
+            buy_trade = open_positions[symbol]
+            
+            # Calculate P&L
+            entry_price = float(buy_trade.price)
+            exit_price = float(trade.price)
+            quantity = float(buy_trade.quantity)
+            pnl = (exit_price - entry_price) * quantity
+            pnl_pct = ((exit_price - entry_price) / entry_price) * 100
+            
+            # Create trade cycle
+            cycle = {
+                "id": f"{buy_trade.id}_{trade.id}",
+                "symbol": symbol,
+                "side": "cycle",  # Indicates complete cycle
+                "quantity": quantity,
+                "entry_price": entry_price,
+                "exit_price": exit_price,
+                "entry_time": buy_trade.timestamp.isoformat(),
+                "exit_time": trade.timestamp.isoformat(),
+                "strategy": buy_trade.strategy,
+                "profit_loss": round(pnl, 2),
+                "profit_loss_pct": round(pnl_pct, 2),
+                "duration_minutes": int((trade.timestamp - buy_trade.timestamp).total_seconds() / 60)
+            }
+            
+            trade_cycles.append(cycle)
+            
+            # Remove from open positions
+            del open_positions[symbol]
+    
+    # Add remaining open positions
+    for symbol, buy_trade in open_positions.items():
+        open_cycle = {
+            "id": f"{buy_trade.id}_open",
+            "symbol": symbol,
+            "side": "open",
+            "quantity": float(buy_trade.quantity),
+            "entry_price": float(buy_trade.price),
+            "exit_price": None,
+            "entry_time": buy_trade.timestamp.isoformat(),
+            "exit_time": None,
+            "strategy": buy_trade.strategy,
+            "profit_loss": 0,
+            "profit_loss_pct": 0,
+            "duration_minutes": None
+        }
+        trade_cycles.append(open_cycle)
+    
+    # Sort by entry time (most recent first) and limit
+    trade_cycles.sort(key=lambda x: x['entry_time'], reverse=True)
+    
+    db.close()
+    return trade_cycles[:limit]
+
 # Performance Metrics
 @app.get("/api/performance")
 async def get_performance():

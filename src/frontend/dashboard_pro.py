@@ -545,8 +545,8 @@ def render_header():
     """, unsafe_allow_html=True)
 
 
-def render_status_card(status_data: Dict):
-    """Render system status card"""
+def render_status_card(status_data: Dict, trades_data: list = None):
+    """Render system status card with real trade statistics"""
     if not status_data:
         st.info("ℹ️ **Demo Mode** - Backend API not available. Displaying chart visualization only.")
         return
@@ -583,14 +583,35 @@ def render_status_card(status_data: Dict):
         """, unsafe_allow_html=True)
 
     with col3:
-        # Add Win Rate and Performance Stats here
+        # Calculate real performance stats from trades data
+        if trades_data:
+            import pandas as pd
+            df = pd.DataFrame(trades_data)
+            
+            # Only count completed cycles for stats
+            completed_cycles = df[df['side'] == 'cycle'] if 'side' in df.columns else pd.DataFrame()
+            total_trades = len(completed_cycles)
+            
+            if total_trades > 0:
+                winning_trades = len(completed_cycles[completed_cycles['profit_loss'] > 0])
+                win_rate = (winning_trades / total_trades * 100)
+                avg_trade = completed_cycles['profit_loss'].mean()
+            else:
+                win_rate = 0
+                avg_trade = 0
+                total_trades = 0
+        else:
+            win_rate = 0
+            avg_trade = 0
+            total_trades = 0
+        
         st.markdown(f"""
             <div class="metric-card">
                 <div class="metric-label">Performance</div>
-                <div class="metric-value">Win Rate: 0%</div>
+                <div class="metric-value">Win Rate: {win_rate:.1f}%</div>
                 <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7);">
-                    Total Trades: 3<br>
-                    Avg Trade: $0.00
+                    Total Trades: {total_trades}<br>
+                    Avg Trade: ${avg_trade:,.2f}
                 </div>
             </div>
         """, unsafe_allow_html=True)
@@ -659,7 +680,7 @@ def render_portfolio_metrics(portfolio_data: Dict):
 
 
 def render_performance_chart(trades_data: list):
-    """Render cumulative P&L chart"""
+    """Render cumulative P&L chart for completed trade cycles"""
     if not trades_data:
         st.markdown("""
             <div class="metric-card" style="text-align: center; padding: 3rem;">
@@ -674,17 +695,34 @@ def render_performance_chart(trades_data: list):
         return
     
     df = pd.DataFrame(trades_data)
-    if 'timestamp' in df.columns and 'profit_loss' in df.columns:
-        df['timestamp'] = pd.to_datetime(df['timestamp'])
-        df = df.sort_values('timestamp')
-        df['cumulative_pnl'] = df['profit_loss'].cumsum()
+    
+    # Filter only completed cycles (not open positions)
+    completed_cycles = df[df['side'] == 'cycle'].copy() if 'side' in df.columns else df.copy()
+    
+    if completed_cycles.empty:
+        st.markdown("""
+            <div class="metric-card" style="text-align: center; padding: 3rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⏳</div>
+                <div class="metric-label">No Completed Trades</div>
+                <div style="color: rgba(255,255,255,0.6); margin-top: 1rem;">
+                    Performance chart will show after first completed trade cycle.<br>
+                    Currently monitoring for entry opportunities.
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+        return
+    
+    if 'exit_time' in completed_cycles.columns and 'profit_loss' in completed_cycles.columns:
+        completed_cycles['exit_time'] = pd.to_datetime(completed_cycles['exit_time'])
+        completed_cycles = completed_cycles.sort_values('exit_time')
+        completed_cycles['cumulative_pnl'] = completed_cycles['profit_loss'].cumsum()
         
         fig = go.Figure()
         
         # Add cumulative P&L line
         fig.add_trace(go.Scatter(
-            x=df['timestamp'],
-            y=df['cumulative_pnl'],
+            x=completed_cycles['exit_time'],
+            y=completed_cycles['cumulative_pnl'],
             mode='lines+markers',
             name='Cumulative P&L',
             line=dict(color='#10b981', width=3),
@@ -697,7 +735,7 @@ def render_performance_chart(trades_data: list):
         fig.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.3)")
         
         fig.update_layout(
-            title="Cumulative Performance",
+            title="Cumulative Performance (Completed Cycles)",
             xaxis_title="Date",
             yaxis_title="Profit/Loss ($)",
             template="plotly_dark",
@@ -1192,7 +1230,7 @@ def render_price_charts(api: 'APIClient'):
 
 
 def render_trades_table(trades_data: list):
-    """Render recent trades"""
+    """Render trade cycles with proper P&L calculations"""
     if not trades_data:
         st.markdown("""
             <div class="metric-card" style="text-align: center; padding: 3rem;">
@@ -1209,17 +1247,51 @@ def render_trades_table(trades_data: list):
     df = pd.DataFrame(trades_data)
     
     if not df.empty:
-        # Format columns based on available data
-        df['Entry'] = df['price'].apply(lambda x: f"${x:,.2f}")
-        df['Exit'] = 'Open'  # All current trades are open positions
-        df['P&L'] = df['profit_loss'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else '$0.00')
-        df['P&L %'] = '0.00%'  # No profit/loss calculation for open positions
+        # Format columns for trade cycles
+        df['Entry'] = df['entry_price'].apply(lambda x: f"${x:,.2f}")
+        
+        # Handle exit prices - show actual exit price or 'Open' for open positions
+        def format_exit(row):
+            if row.get('exit_price') is not None:
+                return f"${row['exit_price']:,.2f}"
+            return 'Open'
+        df['Exit'] = df.apply(format_exit, axis=1)
+        
+        # Format P&L with colors
+        def format_pnl(pnl):
+            if pnl > 0:
+                return f"🟢 ${pnl:,.2f}"
+            elif pnl < 0:
+                return f"🔴 ${abs(pnl):,.2f}"
+            else:
+                return "$0.00"
+        df['P&L'] = df['profit_loss'].apply(format_pnl)
+        
+        # Format P&L percentage
+        def format_pnl_pct(pnl_pct):
+            if pnl_pct > 0:
+                return f"🟢 +{pnl_pct:.2f}%"
+            elif pnl_pct < 0:
+                return f"🔴 {pnl_pct:.2f}%"
+            else:
+                return "0.00%"
+        df['P&L %'] = df['profit_loss_pct'].apply(format_pnl_pct)
+        
+        # Format side to show cycle status
+        def format_side(row):
+            if row['side'] == 'cycle':
+                return 'COMPLETED'
+            elif row['side'] == 'open':
+                return 'OPEN'
+            else:
+                return row['side'].upper()
+        df['Status'] = df.apply(format_side, axis=1)
         
         # Select columns to display
-        display_df = df[['symbol', 'side', 'Entry', 'Exit', 'P&L', 'P&L %', 'timestamp']].rename(columns={
+        display_df = df[['symbol', 'Status', 'Entry', 'Exit', 'P&L', 'P&L %', 'entry_time']].rename(columns={
             'symbol': 'Symbol',
-            'side': 'Side',
-            'timestamp': 'Time'
+            'Status': 'Status',
+            'entry_time': 'Entry Time'
         })
         
         st.dataframe(display_df.tail(20), width='stretch', hide_index=True)
@@ -1335,10 +1407,10 @@ def main():
     status_data = api.get('/api/status')
     portfolio_data = api.get('/api/portfolio')
     signals_data = api.get('/api/signals')
-    trades_data = api.get('/api/trades?limit=50')
+    trades_data = api.get('/api/trade-cycles?limit=50')
     
     # Status cards
-    render_status_card(status_data)
+    render_status_card(status_data, trades_data)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -1379,22 +1451,26 @@ def main():
         with col1:
             if trades_data:
                 df = pd.DataFrame(trades_data)
-                winning = len(df[df['profit_loss'] > 0])
-                total = len(df)
+                # Only calculate win rate for completed cycles
+                completed_cycles = df[df['side'] == 'cycle'] if 'side' in df.columns else df
+                winning = len(completed_cycles[completed_cycles['profit_loss'] > 0])
+                total = len(completed_cycles)
                 win_rate = (winning / total * 100) if total > 0 else 0
                 
                 st.markdown(f"""
                     <div class="metric-card">
                         <div class="metric-label">Win Rate</div>
                         <div class="metric-value">{win_rate:.1f}%</div>
-                        <div class="metric-delta">({winning}/{total} trades)</div>
+                        <div class="metric-delta">({winning}/{total} cycles)</div>
                     </div>
                 """, unsafe_allow_html=True)
         
         with col2:
             if trades_data:
                 df = pd.DataFrame(trades_data)
-                total_profit = df['profit_loss'].sum()
+                # Only calculate P&L for completed cycles
+                completed_cycles = df[df['side'] == 'cycle'] if 'side' in df.columns else df
+                total_profit = completed_cycles['profit_loss'].sum()
                 
                 delta_class = 'positive' if total_profit >= 0 else 'negative'
                 st.markdown(f"""
