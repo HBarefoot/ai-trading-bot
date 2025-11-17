@@ -63,7 +63,7 @@ class PortfolioManager:
         self.cash_balance = initial_balance
         self.positions: Dict[str, Position] = {}
         self.trades: List[Trade] = []
-        self.max_position_size = 0.30  # Max 30% per position
+        self.max_position_size = 0.07  # Max 7% per position (REDUCED FROM 30% - Critical Risk Management)
         self.stop_loss_pct = 0.15  # 15% stop loss
         self.take_profit_pct = 0.30  # 30% take profit
 
@@ -89,6 +89,26 @@ class PortfolioManager:
             return 0.0
 
         return available_cash / current_price
+    
+    def calculate_dynamic_stop_loss(self, symbol: str, entry_price: float, market_data: dict = None) -> float:
+        """Calculate dynamic stop loss based on market volatility and conditions"""
+        base_sl_pct = self.stop_loss_pct  # 15% base
+        
+        # If we have market data, adjust based on volatility
+        if market_data and 'volatility' in market_data:
+            volatility = market_data['volatility']
+            # Higher volatility = wider stop loss (up to 20%), lower volatility = tighter (down to 10%)
+            if volatility > 0.05:  # High volatility (>5%)
+                sl_pct = min(base_sl_pct * 1.33, 0.20)  # Max 20% SL
+            elif volatility < 0.02:  # Low volatility (<2%)  
+                sl_pct = max(base_sl_pct * 0.67, 0.08)  # Min 8% SL
+            else:
+                sl_pct = base_sl_pct
+        else:
+            # Without volatility data, use slightly tighter SL for smaller positions
+            sl_pct = base_sl_pct * 0.8  # 12% instead of 15% with smaller position sizes
+            
+        return entry_price * (1 - sl_pct)
 
     def can_open_position(self, symbol: str) -> bool:
         """Check if we can open a new position"""
@@ -109,7 +129,7 @@ class PortfolioManager:
             amount=amount,
             entry_price=price,
             entry_time=datetime.now(),
-            stop_loss=price * (1 - self.stop_loss_pct),  # 15% below entry
+            stop_loss=self.calculate_dynamic_stop_loss(symbol, price),  # Dynamic SL based on volatility
             take_profit=price * (1 + self.take_profit_pct),  # 30% above entry
             current_price=price
         )

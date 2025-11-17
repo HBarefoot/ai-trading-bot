@@ -60,7 +60,7 @@ class PortfolioManager:
         self.cash_balance = initial_balance
         self.positions: Dict[str, Position] = {}
         self.trades: List[Trade] = []
-        self.max_position_size = 0.30  # Max 30% per position
+        self.max_position_size = 0.07  # Max 7% per position (REDUCED FROM 30% - Critical Risk Management)
         self.stop_loss_pct = 0.15  # 15% stop loss (matches Week1Refined strategy)
         self.take_profit_pct = 0.30  # 30% take profit (matches Week1Refined strategy)
         
