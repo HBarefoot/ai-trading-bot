@@ -225,10 +225,10 @@ class AIEnhancedStrategy:
                 self.sentiment_weight * sentiment_signal
             )
             
-            # Apply threshold for high-quality signal detection
-            if combined > 0.6:  # Raised from 0.3 for higher precision
+            # Apply threshold (balanced for good signal detection)
+            if combined > 0.3:  # Reverted from 0.6 to allow more trades
                 combined_signals.iloc[i] = 1.0  # Strong BUY
-            elif combined < -0.6:  # Raised from -0.3 for higher precision
+            elif combined < -0.3:  # Reverted from -0.6 to allow more trades
                 combined_signals.iloc[i] = -1.0  # Strong SELL
             else:
                 combined_signals.iloc[i] = 0.0  # HOLD
